@@ -11,8 +11,11 @@ $login = "MANAGER LOGIN";
 $password = "API PASSWORD";
 $exampleLogin = 21001480007;
 
-$client = new MetaTraderClient($server, $port, $login, $password);
+$api = new MetaTraderClient($server, $port, $login, $password);
 
+/**
+ * User Function
+ */
 // Create Account
 // $user = new User();
 // $user->setName("John Due Test");
@@ -28,7 +31,6 @@ $client = new MetaTraderClient($server, $port, $login, $password);
 // $user->setMainPassword("Secure123");
 // $user->setInvestorPassword("NotSecure123");
 // $user->setPhonePassword("NotSecure123");
-
 // $result = $api->createUser($user);
 // var_dump($result);
 
@@ -39,6 +41,12 @@ $client = new MetaTraderClient($server, $port, $login, $password);
 // Get User Information
 // $user = $api->getUser($exampleLogin);
 // var_dump($user);
+
+// Update User Information
+// $user = $client->getUser(21001480007);
+// $user->Name = "Name Changed";
+// $newUser = $client->updateUser($user);
+
 
 // Delete User
 // $user = $api->deleteUser(2024);
@@ -52,7 +60,8 @@ $client = new MetaTraderClient($server, $port, $login, $password);
 // var_dump($order);
 
 // Get Open Order Total
-// $total = $api->getOrderTotal(2024);
+// $total = $api->getOrderTotal($exampleLogin);
+// $trades = $api->getOrderPagination($login, $offset, $total);
 // var_dump($total);
 
 // Get Open Order Pagination

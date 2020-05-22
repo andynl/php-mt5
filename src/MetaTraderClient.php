@@ -206,7 +206,7 @@ class MetaTraderClient
     /**
      * Get User Information By Login
      * @param $login
-     * @return null
+     * @return MTUser
      * @throws ConnectionException
      * @throws UserException
      */
@@ -359,6 +359,30 @@ class MetaTraderClient
             throw new UserException(MTRetCode::GetError($result));
         }
         return $ticket;
+    }
+
+    /**
+     * @param $user
+     * @return MTUser
+     * @throws ConnectionException
+     * @throws UserException
+     */
+    public function updateUser($user)
+    {
+        $newUser = null;
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_user = new MTUserProtocol($this->m_connect);
+        $result = $mt_user->Update($user, $newUser);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $newUser;
     }
 
 
