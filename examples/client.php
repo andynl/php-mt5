@@ -65,6 +65,11 @@ $api = new MetaTraderClient($server, $port, $login, $password);
 // $trades = $api->getOrderPagination($login, $offset, $total);
 // var_dump($total);
 
+// Get Closed Order Total and pagination
+// $total = $api->getOrderHistoryTotal($exampleLogin, $timestampfrom, $timestampto);
+// $trades = $api->getOrderHistoryPagination($login, $timestampfrom, $timestampto, $offset, $total);
+// var_dump($total);
+
 
 
 /**

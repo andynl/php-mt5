@@ -22,7 +22,7 @@ include "mt5_user.php";
 include "mt5_deal.php";
 include "MTOrderProtocol.php";
 include "mt5_position.php";
-include "mt5_history.php";
+include "MTHistoryProtocol.php";
 include "mt5_tick.php";
 include "mt5_mail.php";
 include "mt5_news.php";

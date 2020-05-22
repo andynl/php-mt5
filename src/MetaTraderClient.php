@@ -18,6 +18,7 @@ use Tarikh\PhpMeta\Lib\MTUser;
 use Tarikh\PhpMeta\Lib\MTUserProtocol;
 use Tarikh\PhpMeta\Lib\MTOrderProtocol;
 use Tarikh\PhpMeta\src\Lib\MTEnDealAction;
+use Tarikh\PhpMeta\Lib\MTHistoryProtocol;
 
 //+------------------------------------------------------------------+
 //--- web api version
@@ -383,6 +384,60 @@ class MetaTraderClient
             throw new UserException(MTRetCode::GetError($result));
         }
         return $newUser;
+    }
+
+    /**
+     * Get Total Closed Order
+     * @param $login
+     * @return int
+     * @throws ConnectionException
+     * @throws UserException
+     */
+    public function getOrderHistoryTotal($login, $from, $to)
+    {
+        $total = 0;
+        $user = null;
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_order = new MTHistoryProtocol($this->m_connect);
+        $result = $mt_order->HistoryGetTotal($login, $from, $to, $total);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $total;
+    }
+
+    /**
+     * Get Closed Order Pagination
+     * @param $login
+     * @param $offset
+     * @param $total
+     * @return null
+     * @throws ConnectionException
+     * @throws UserException
+     */
+    public function getOrderHistoryPagination($login, $from, $to, $offset, $total)
+    {
+        $orders = null;
+        $user = null;
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_order = new MTHistoryProtocol($this->m_connect);
+        $result = $mt_order->HistoryGetPage($login, $from, $to, $offset, $total, $orders);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $orders;
     }
 
 
