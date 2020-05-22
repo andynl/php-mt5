@@ -59,14 +59,13 @@ $api = new MetaTraderClient($server, $port, $login, $password);
 // $order = $api->getOrder($ticket = 100);
 // var_dump($order);
 
-// Get Open Order Total
+
+// Get Open Order Total and pagination
 // $total = $api->getOrderTotal($exampleLogin);
 // $trades = $api->getOrderPagination($login, $offset, $total);
 // var_dump($total);
 
-// Get Open Order Pagination
-// $total = $api->getOrderTotal(2024);
-// var_dump($total);
+
 
 /**
  * BALANCE OPERATION
