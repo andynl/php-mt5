@@ -85,4 +85,4 @@ $api = new MetaTraderClient($server, $port, $login, $password);
  * BALANCE OPERATION
  */
 // Conduct User Balance (CREDIT, DEBIT, DEPOSIT, WITHDRAWAL) see MTEnDealAction
-// $ticket = $api->conductUserBalance(2024 , MTEnDealAction::DEAL_BALANCE, 100, 'Avar_dumping 100 USD');
+// $ticket = $api->conductUserBalance(2024 , MTEnDealAction::DEAL_BALANCE, 100, 'your comment here');
