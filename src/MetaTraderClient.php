@@ -20,6 +20,9 @@ use Tarikh\PhpMeta\Lib\MTOrderProtocol;
 use Tarikh\PhpMeta\src\Lib\MTEnDealAction;
 use Tarikh\PhpMeta\Lib\MTHistoryProtocol;
 use Tarikh\PhpMeta\Lib\MTOrder;
+use Tarikh\PhpMeta\Lib\MTPositionProtocol;
+use function Couchbase\defaultDecoder;
+use Tarikh\PhpMeta\Lib\MTPosition;
 
 //+------------------------------------------------------------------+
 //--- web api version
@@ -290,8 +293,8 @@ class MetaTraderClient
      */
     public function getOrderTotal($login)
     {
-        $total = 0;
-        $user = null;
+        $total = null;
+        // $user = null;
         if (!$this->isConnected()) {
             $conn = $this->connect();
 
@@ -466,5 +469,58 @@ class MetaTraderClient
         return $orders;
     }
 
+    /**
+     * Get Total Open Position
+     * @param $login
+     * @return int
+     * @throws ConnectionException
+     * @throws UserException
+     */
+    public function getPositionTotal($login)
+    {
+        $total = 0;
+        $user = null;
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
 
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_order = new MTPositionProtocol($this->m_connect);
+        $result = $mt_order->PositionGetTotal($login, $total);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $total;
+    }
+
+    /**
+     * Get Open Position Pagination
+     * @param $login
+     * @param $offset
+     * @param $total
+     * @return MTPosition[]
+     * @throws ConnectionException
+     * @throws UserException
+     */
+    public function getPositionPaginate($login, $offset, $total)
+    {
+        $positions = [];
+        $user = null;
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_order = new MTPositionProtocol($this->m_connect);
+
+        $result = $mt_order->PositionGetPage($login, $offset, $total, $positions);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $positions;
+    }
 }

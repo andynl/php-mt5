@@ -1,9 +1,5 @@
 <?php
-//+------------------------------------------------------------------+
-//|                                             MetaTrader 5 Web API |
-//|                   Copyright 2001-2019, MetaQuotes Software Corp. |
-//|                                        http://www.metaquotes.net |
-//+------------------------------------------------------------------+
+namespace Tarikh\PhpMeta\Lib;
 /**
  * Class get positions
  */
@@ -217,7 +213,7 @@ class MTPositionProtocol
     return MTRetCode::MT_RET_OK;
     }
   }
-  
+
 /**
  * position types
  */
@@ -229,7 +225,7 @@ class MTEnPositionAction
   const POSITION_FIRST = MTEnPositionAction::POSITION_BUY;
   const POSITION_LAST  = MTEnPositionAction::POSITION_SELL;
   }
-  
+
 /**
  * activation modes
  */
@@ -289,7 +285,7 @@ class MTEnPositionReason
   const POSITION_REASON_FIRST = MTEnPositionReason::POSITION_REASON_CLIENT;
   const POSITION_REASON_LAST  = MTEnPositionReason::POSITION_REASON_SPLIT;
   }
-  
+
 /**
  * modification flags
  */
@@ -307,7 +303,7 @@ class MTPositionEnTradeModifyFlags
   const MODIFY_FLAGS_NONE = 0x00;
   const MODIFY_FLAGS_ALL  = 0xFF;
   }
-  
+
 /**
  * Position information
  */
@@ -374,7 +370,7 @@ class MTPosition
   //--- order activation flags (type is MTEnPositionTradeActivationFlags)
   public $ActivationFlags;
   }
-  
+
 /**
  * Answer on request position_get_total
  */
@@ -383,7 +379,7 @@ class MTPositionTotalAnswer
   public $RetCode = '-1';
   public $Total = 0;
   }
-  
+
 /**
  * get position page answer
  */
@@ -413,7 +409,7 @@ class MTPositionPageAnswer
     return $result;
     }
   }
-  
+
 /**
  * get position page answer
  */
