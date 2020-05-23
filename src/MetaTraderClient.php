@@ -19,6 +19,7 @@ use Tarikh\PhpMeta\Lib\MTUserProtocol;
 use Tarikh\PhpMeta\Lib\MTOrderProtocol;
 use Tarikh\PhpMeta\src\Lib\MTEnDealAction;
 use Tarikh\PhpMeta\Lib\MTHistoryProtocol;
+use Tarikh\PhpMeta\Lib\MTOrder;
 
 //+------------------------------------------------------------------+
 //--- web api version
@@ -255,7 +256,7 @@ class MetaTraderClient
     }
 
     /**
-     * Get Order Details
+     * Get Open Order Details
      * @param $ticket
      * @return int
      * @throws ConnectionException
@@ -387,6 +388,31 @@ class MetaTraderClient
     }
 
     /**
+     * Get Closed Order Details
+     * @param $ticket
+     * @return int
+     * @throws ConnectionException
+     * @throws UserException
+     */
+    public function getOrderHistory($ticket)
+    {
+        $order = 0;
+        $user = null;
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_order = new MTHistoryProtocol($this->m_connect);
+        $result = $mt_order->HistoryGet($ticket, $order);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $order;
+    }
+    /**
      * Get Total Closed Order
      * @param $login
      * @return int
@@ -417,7 +443,7 @@ class MetaTraderClient
      * @param $login
      * @param $offset
      * @param $total
-     * @return null
+     * @return MTOrder[]
      * @throws ConnectionException
      * @throws UserException
      */

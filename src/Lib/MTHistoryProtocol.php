@@ -1,5 +1,6 @@
 <?php
 namespace Tarikh\PhpMeta\Lib;
+use Tarikh\PhpMeta\Lib\MTOrderJson;
 /**
  * Class get history
  */

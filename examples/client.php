@@ -65,10 +65,19 @@ $api = new MetaTraderClient($server, $port, $login, $password);
 // $trades = $api->getOrderPagination($login, $offset, $total);
 // var_dump($total);
 
+
+// Get Closed Order Details by ticket
+// $order = $api->getOrderHistory(4914208);
+// var_dump($order);
+
 // Get Closed Order Total and pagination
 // $total = $api->getOrderHistoryTotal($exampleLogin, $timestampfrom, $timestampto);
-// $trades = $api->getOrderHistoryPagination($login, $timestampfrom, $timestampto, $offset, $total);
-// var_dump($total);
+// $trades = $api->getOrderHistoryPagination($exampleLogin, $timestampfrom, $timestampto, 0, $total);
+// foreach ($trades as $trade) {
+//     // see class MTOrder
+//     echo "LOGIN : ".$trade->Login.PHP_EOL;
+//     echo "TICKET : ".$trade->Order.PHP_EOL;
+// }
 
 
 
