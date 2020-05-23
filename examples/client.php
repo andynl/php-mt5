@@ -79,6 +79,14 @@ $api = new MetaTraderClient($server, $port, $login, $password);
 //     echo "TICKET : ".$trade->Order.PHP_EOL;
 // }
 
+// Get Open Position
+// $total = $api->getPositionTotal($exampleLogin);
+// $positions = $api->getPositionPaginate($exampleLogin, 0, $total);
+// foreach ($positions as $p) {
+//     echo "SYMBOL : ".$p->Symbol.PHP_EOL;
+//     echo "LOGIN : ".$p->Login.PHP_EOL;
+// }
+
 
 
 /**
