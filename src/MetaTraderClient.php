@@ -21,7 +21,6 @@ use Tarikh\PhpMeta\src\Lib\MTEnDealAction;
 use Tarikh\PhpMeta\Lib\MTHistoryProtocol;
 use Tarikh\PhpMeta\Lib\MTOrder;
 use Tarikh\PhpMeta\Lib\MTPositionProtocol;
-use function Couchbase\defaultDecoder;
 use Tarikh\PhpMeta\Lib\MTPosition;
 
 //+------------------------------------------------------------------+
@@ -415,6 +414,7 @@ class MetaTraderClient
         }
         return $order;
     }
+
     /**
      * Get Total Closed Order
      * @param $login
@@ -522,5 +522,31 @@ class MetaTraderClient
             throw new UserException(MTRetCode::GetError($result));
         }
         return $positions;
+    }
+
+    /**
+     * Change User Password
+     * @param $login
+     * @param $newPassword
+     * @param string $type
+     * @return bool
+     * @throws ConnectionException
+     * @throws UserException
+     */
+    public function changePasswordUser($login, $newPassword, $type = "MAIN")
+    {
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_user = new MTUserProtocol($this->m_connect);
+        $result = $mt_user->PasswordChange($login, $newPassword, $type);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return true;
     }
 }

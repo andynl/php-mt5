@@ -51,6 +51,10 @@ $api = new MetaTraderClient($server, $port, $login, $password);
 // Delete User
 // $user = $api->deleteUser(2024);
 
+// Change User Password
+// $type = "MAIN"; // Change $type to INVESTOR if you want to change investor password
+// $api->changePasswordUser($exampleLogin, 'SecurePassword', $type);
+
 /**
  * ORDER FUNCTION
  */
