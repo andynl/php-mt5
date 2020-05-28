@@ -19,7 +19,7 @@ include "mt5_common.php";
 include "mt5_group.php";
 include "mt5_symbol.php";
 include "mt5_user.php";
-include "mt5_deal.php";
+include "MTDealProtocol.php";
 include "MTOrderProtocol.php";
 include "MTPositionProtocol.php";
 include "MTHistoryProtocol.php";

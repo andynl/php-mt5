@@ -91,6 +91,13 @@ $api = new MetaTraderClient($server, $port, $login, $password);
 //     echo "LOGIN : ".$p->Login.PHP_EOL;
 // }
 
+// Get Deal By Ticket
+// $deal = $api->dealGet(1402053);
+
+// Get Deal Paginate
+// $total = $api->dealGetTotal($exampleLogin, $timestampfrom, $timestampto);
+// $deals = $api->dealGetPaginate($exampleLogin, $timestampfrom, $timestampto, 0, $total);
+// var_dump($deals);
 
 
 /**

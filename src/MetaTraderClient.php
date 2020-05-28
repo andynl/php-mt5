@@ -22,6 +22,7 @@ use Tarikh\PhpMeta\Lib\MTHistoryProtocol;
 use Tarikh\PhpMeta\Lib\MTOrder;
 use Tarikh\PhpMeta\Lib\MTPositionProtocol;
 use Tarikh\PhpMeta\Lib\MTPosition;
+use Tarikh\PhpMeta\Traits\Deal;
 
 //+------------------------------------------------------------------+
 //--- web api version
@@ -31,6 +32,7 @@ define("WebAPIDate", "18 Oct 2019");
 
 class MetaTraderClient
 {
+    use Deal;
     /**
      * @var MTConnect $m_connect
      */
@@ -467,6 +469,31 @@ class MetaTraderClient
             throw new UserException(MTRetCode::GetError($result));
         }
         return $orders;
+    }
+
+    /**
+     * Get Total Open Position
+     * @param $login
+     * @return int
+     * @throws ConnectionException
+     * @throws UserException
+     */
+    public function getPosition($ticket, $symbol)
+    {
+        $position = null;
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_order = new MTPositionProtocol($this->m_connect);
+        $result = $mt_order->PositionGet($ticket, $symbol,$position);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $position;
     }
 
     /**
