@@ -174,6 +174,7 @@ class MTConnect
             //--- add body request
             if (!empty($body_request)) $q .= $body_request;
         } else $q .= "|\r\n";
+
         //---
         $query_body = mb_convert_encoding($q, "utf-16le", "utf-8");
         //--- if need we crypt packet, crypt did not for auth_start and auth_start_answer

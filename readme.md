@@ -43,12 +43,8 @@ The result variable will return Trade class with ticket information, you can gra
 
 ### Create User
 ```php
-use Tarikh\PhpMeta\Entities\User;
-use Tarikh\PhpMeta\LaravelMt5;
-
 use Tarikh\PhpMeta\MetaTraderClient;
 use Tarikh\PhpMeta\Entities\User;
-use Tarikh\PhpMeta\src\Lib\MTEnDealAction;
 
 $server = "SERVER_MT4_IP";
 $port = 443;

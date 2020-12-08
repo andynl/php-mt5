@@ -490,6 +490,44 @@ class MTUserProtocol
     }
 
     /**
+     * Get list users login
+     *
+     * @param string     $group
+     * @param array(int) $logins
+     *
+     * @return MTRetCode
+     */
+    public function UserGetBatch($group, &$logins)
+    {
+        $data = array(MTProtocolConsts::WEB_PARAM_LOGIN => $group);
+        //--- send request
+        if(!$this->m_connect->Send(MTProtocolConsts::WEB_CMD_USER_USER_GET_BATCH, $data))
+        {
+
+            if(MTLogger::getIsWriteLog()) MTLogger::write(MTLoggerType::ERROR, 'send user logins get failed');
+            return MTRetCode::MT_RET_ERR_NETWORK;
+        }
+
+        //--- get answer
+        if(($answer = $this->m_connect->Read()) == null)
+        {
+            if(MTLogger::getIsWriteLog()) MTLogger::write(MTLoggerType::ERROR, 'answer user logins get is empty');
+            return MTRetCode::MT_RET_ERR_NETWORK;
+        }
+        $user_logins = null;
+        //--- parse answer
+        if(($error_code = $this->ParseUserLogins($answer, $user_logins)) != MTRetCode::MT_RET_OK)
+        {
+            if(MTLogger::getIsWriteLog()) MTLogger::write(MTLoggerType::ERROR, 'parse user logins get failed: [' . $error_code . '] ' . MTRetCode::GetError($error_code));
+            return $error_code;
+        }
+        //---
+        $logins = $user_logins->GetFromJson();
+        //---
+        return MTRetCode::MT_RET_OK;
+    }
+
+    /**
      * parsing answer for command user_logins
      *
      * @param $answer       string
@@ -712,6 +750,678 @@ class MTUser
     private const EXTERNAL_ID_LIMIT  = 128;
     //--- login
     public $Login;
+
+    /**
+     * @return mixed
+     */
+    public function getLogin()
+    {
+        return $this->Login;
+    }
+
+    /**
+     * @param mixed $Login
+     */
+    public function setLogin($Login)
+    {
+        $this->Login = $Login;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGroup()
+    {
+        return $this->Group;
+    }
+
+    /**
+     * @param mixed $Group
+     */
+    public function setGroup($Group)
+    {
+        $this->Group = $Group;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCertSerialNumber()
+    {
+        return $this->CertSerialNumber;
+    }
+
+    /**
+     * @param mixed $CertSerialNumber
+     */
+    public function setCertSerialNumber($CertSerialNumber)
+    {
+        $this->CertSerialNumber = $CertSerialNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRights()
+    {
+        return $this->Rights;
+    }
+
+    /**
+     * @param mixed $Rights
+     */
+    public function setRights($Rights)
+    {
+        $this->Rights = $Rights;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMQID()
+    {
+        return $this->MQID;
+    }
+
+    /**
+     * @param mixed $MQID
+     */
+    public function setMQID($MQID)
+    {
+        $this->MQID = $MQID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRegistration()
+    {
+        return $this->Registration;
+    }
+
+    /**
+     * @param mixed $Registration
+     */
+    public function setRegistration($Registration)
+    {
+        $this->Registration = $Registration;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastAccess()
+    {
+        return $this->LastAccess;
+    }
+
+    /**
+     * @param mixed $LastAccess
+     */
+    public function setLastAccess($LastAccess)
+    {
+        $this->LastAccess = $LastAccess;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastPassChange()
+    {
+        return $this->LastPassChange;
+    }
+
+    /**
+     * @param mixed $LastPassChange
+     */
+    public function setLastPassChange($LastPassChange)
+    {
+        $this->LastPassChange = $LastPassChange;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastIP()
+    {
+        return $this->LastIP;
+    }
+
+    /**
+     * @param mixed $LastIP
+     */
+    public function setLastIP($LastIP)
+    {
+        $this->LastIP = $LastIP;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->Name;
+    }
+
+    /**
+     * @param mixed $Name
+     */
+    public function setName($Name)
+    {
+        $this->Name = $Name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompany()
+    {
+        return $this->Company;
+    }
+
+    /**
+     * @param mixed $Company
+     */
+    public function setCompany($Company)
+    {
+        $this->Company = $Company;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAccount()
+    {
+        return $this->Account;
+    }
+
+    /**
+     * @param mixed $Account
+     */
+    public function setAccount($Account)
+    {
+        $this->Account = $Account;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCountry()
+    {
+        return $this->Country;
+    }
+
+    /**
+     * @param mixed $Country
+     */
+    public function setCountry($Country)
+    {
+        $this->Country = $Country;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLanguage()
+    {
+        return $this->Language;
+    }
+
+    /**
+     * @param mixed $Language
+     */
+    public function setLanguage($Language)
+    {
+        $this->Language = $Language;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClientID()
+    {
+        return $this->ClientID;
+    }
+
+    /**
+     * @param mixed $ClientID
+     */
+    public function setClientID($ClientID)
+    {
+        $this->ClientID = $ClientID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->City;
+    }
+
+    /**
+     * @param mixed $City
+     */
+    public function setCity($City)
+    {
+        $this->City = $City;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getState()
+    {
+        return $this->State;
+    }
+
+    /**
+     * @param mixed $State
+     */
+    public function setState($State)
+    {
+        $this->State = $State;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getZipCode()
+    {
+        return $this->ZipCode;
+    }
+
+    /**
+     * @param mixed $ZipCode
+     */
+    public function setZipCode($ZipCode)
+    {
+        $this->ZipCode = $ZipCode;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAddress()
+    {
+        return $this->Address;
+    }
+
+    /**
+     * @param mixed $Address
+     */
+    public function setAddress($Address)
+    {
+        $this->Address = $Address;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->Phone;
+    }
+
+    /**
+     * @param mixed $Phone
+     */
+    public function setPhone($Phone)
+    {
+        $this->Phone = $Phone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->Email;
+    }
+
+    /**
+     * @param mixed $Email
+     */
+    public function setEmail($Email)
+    {
+        $this->Email = $Email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getID()
+    {
+        return $this->ID;
+    }
+
+    /**
+     * @param mixed $ID
+     */
+    public function setID($ID)
+    {
+        $this->ID = $ID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->Status;
+    }
+
+    /**
+     * @param mixed $Status
+     */
+    public function setStatus($Status)
+    {
+        $this->Status = $Status;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComment()
+    {
+        return $this->Comment;
+    }
+
+    /**
+     * @param mixed $Comment
+     */
+    public function setComment($Comment)
+    {
+        $this->Comment = $Comment;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getColor()
+    {
+        return $this->Color;
+    }
+
+    /**
+     * @param mixed $Color
+     */
+    public function setColor($Color)
+    {
+        $this->Color = $Color;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhonePassword()
+    {
+        return $this->PhonePassword;
+    }
+
+    /**
+     * @param mixed $PhonePassword
+     */
+    public function setPhonePassword($PhonePassword)
+    {
+        $this->PhonePassword = $PhonePassword;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLeverage()
+    {
+        return $this->Leverage;
+    }
+
+    /**
+     * @param mixed $Leverage
+     */
+    public function setLeverage($Leverage)
+    {
+        $this->Leverage = $Leverage;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAgent()
+    {
+        return $this->Agent;
+    }
+
+    /**
+     * @param mixed $Agent
+     */
+    public function setAgent($Agent)
+    {
+        $this->Agent = $Agent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBalance()
+    {
+        return $this->Balance;
+    }
+
+    /**
+     * @param mixed $Balance
+     */
+    public function setBalance($Balance)
+    {
+        $this->Balance = $Balance;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCredit()
+    {
+        return $this->Credit;
+    }
+
+    /**
+     * @param mixed $Credit
+     */
+    public function setCredit($Credit)
+    {
+        $this->Credit = $Credit;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInterestRate()
+    {
+        return $this->InterestRate;
+    }
+
+    /**
+     * @param mixed $InterestRate
+     */
+    public function setInterestRate($InterestRate)
+    {
+        $this->InterestRate = $InterestRate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCommissionDaily()
+    {
+        return $this->CommissionDaily;
+    }
+
+    /**
+     * @param mixed $CommissionDaily
+     */
+    public function setCommissionDaily($CommissionDaily)
+    {
+        $this->CommissionDaily = $CommissionDaily;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCommissionMonthly()
+    {
+        return $this->CommissionMonthly;
+    }
+
+    /**
+     * @param mixed $CommissionMonthly
+     */
+    public function setCommissionMonthly($CommissionMonthly)
+    {
+        $this->CommissionMonthly = $CommissionMonthly;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBalancePrevDay()
+    {
+        return $this->BalancePrevDay;
+    }
+
+    /**
+     * @param mixed $BalancePrevDay
+     */
+    public function setBalancePrevDay($BalancePrevDay)
+    {
+        $this->BalancePrevDay = $BalancePrevDay;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBalancePrevMonth()
+    {
+        return $this->BalancePrevMonth;
+    }
+
+    /**
+     * @param mixed $BalancePrevMonth
+     */
+    public function setBalancePrevMonth($BalancePrevMonth)
+    {
+        $this->BalancePrevMonth = $BalancePrevMonth;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEquityPrevDay()
+    {
+        return $this->EquityPrevDay;
+    }
+
+    /**
+     * @param mixed $EquityPrevDay
+     */
+    public function setEquityPrevDay($EquityPrevDay)
+    {
+        $this->EquityPrevDay = $EquityPrevDay;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEquityPrevMonth()
+    {
+        return $this->EquityPrevMonth;
+    }
+
+    /**
+     * @param mixed $EquityPrevMonth
+     */
+    public function setEquityPrevMonth($EquityPrevMonth)
+    {
+        $this->EquityPrevMonth = $EquityPrevMonth;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTradeAccounts()
+    {
+        return $this->TradeAccounts;
+    }
+
+    /**
+     * @param mixed $TradeAccounts
+     */
+    public function setTradeAccounts($TradeAccounts)
+    {
+        $this->TradeAccounts = $TradeAccounts;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLeadCampaign()
+    {
+        return $this->LeadCampaign;
+    }
+
+    /**
+     * @param mixed $LeadCampaign
+     */
+    public function setLeadCampaign($LeadCampaign)
+    {
+        $this->LeadCampaign = $LeadCampaign;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLeadSource()
+    {
+        return $this->LeadSource;
+    }
+
+    /**
+     * @param mixed $LeadSource
+     */
+    public function setLeadSource($LeadSource)
+    {
+        $this->LeadSource = $LeadSource;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMainPassword()
+    {
+        return $this->MainPassword;
+    }
+
+    /**
+     * @param mixed $MainPassword
+     */
+    public function setMainPassword($MainPassword)
+    {
+        $this->MainPassword = $MainPassword;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInvestPassword()
+    {
+        return $this->InvestPassword;
+    }
+
+    /**
+     * @param mixed $InvestPassword
+     */
+    public function setInvestPassword($InvestPassword)
+    {
+        $this->InvestPassword = $InvestPassword;
+    }
     //--- group
     public $Group;
     //--- certificate serial number

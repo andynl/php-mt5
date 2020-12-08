@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tarikh\PhpMeta\src\Lib;
+namespace Tarikh\PhpMeta\Lib;
 
 
 class MTEnDealReason

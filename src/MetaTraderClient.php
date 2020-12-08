@@ -17,7 +17,7 @@ use Tarikh\PhpMeta\Lib\MTTradeProtocol;
 use Tarikh\PhpMeta\Lib\MTUser;
 use Tarikh\PhpMeta\Lib\MTUserProtocol;
 use Tarikh\PhpMeta\Lib\MTOrderProtocol;
-use Tarikh\PhpMeta\src\Lib\MTEnDealAction;
+use Tarikh\PhpMeta\Lib\MTEnDealAction;
 use Tarikh\PhpMeta\Lib\MTHistoryProtocol;
 use Tarikh\PhpMeta\Lib\MTOrder;
 use Tarikh\PhpMeta\Lib\MTPositionProtocol;
@@ -209,6 +209,26 @@ class MetaTraderClient
         return $logins;
     }
 
+    public function getUserBatch($group)
+    {
+        $logins = null;
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+
+        $mt_user = new MTUserProtocol($this->m_connect);
+
+        $result = $mt_user->UserGetBatch($group, $logins);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $logins;
+    }
+
     /**
      * Get User Information By Login
      * @param $login
@@ -349,7 +369,7 @@ class MetaTraderClient
      * @throws ConnectionException
      * @throws UserException
      */
-    public function conductUserBalance($login, MTEnDealAction $type, $balance, $comment)
+    public function conductUserBalance($login, $type, $balance, $comment)
     {
         $ticket = null;
         if (!$this->isConnected()) {
@@ -360,7 +380,8 @@ class MetaTraderClient
             }
         }
         $mt_order = new MTTradeProtocol($this->m_connect);
-        $result = $mt_order->TradeBalance($login, $type, $balance, $comment);
+        $result = $mt_order->TradeBalance($login, $type, $balance, $comment, $ticket);
+
         if ($result != MTRetCode::MT_RET_OK) {
             throw new UserException(MTRetCode::GetError($result));
         }
