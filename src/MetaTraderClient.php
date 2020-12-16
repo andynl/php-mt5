@@ -23,6 +23,7 @@ use Tarikh\PhpMeta\Lib\MTOrder;
 use Tarikh\PhpMeta\Lib\MTPositionProtocol;
 use Tarikh\PhpMeta\Lib\MTPosition;
 use Tarikh\PhpMeta\Traits\Deal;
+use Tarikh\PhpMeta\Lib\MTDealProtocol;
 
 //+------------------------------------------------------------------+
 //--- web api version
@@ -288,7 +289,7 @@ class MetaTraderClient
      */
     public function getOrder($ticket)
     {
-        $order = 0;
+        $order = null;
         $user = null;
         if (!$this->isConnected()) {
             $conn = $this->connect();
@@ -597,4 +598,94 @@ class MetaTraderClient
         }
         return true;
     }
+
+    public function checkPassword($login, $password, $type = "MAIN")
+    {
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_user = new MTUserProtocol($this->m_connect);
+        $result = $mt_user->PasswordCheck($login, $password, $type);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return true;
+    }
+
+    public function getTradingAccounts($login)
+    {
+        $accounts = [];
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_user = new MTUserProtocol($this->m_connect);
+        $result = $mt_user->AccountGet($login, $accounts);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $accounts;
+    }
+
+    public function getDealTotal($login, $from, $to)
+    {
+        $total = 0;
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_user = new MTDealProtocol($this->m_connect);
+        $result = $mt_user->DealGetTotal($login, $from, $to, $total);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $total;
+    }
+
+    public function getDealPaginate($login, $from, $to, $offset, $total)
+    {
+        $deals = [];
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_user = new MTDealProtocol($this->m_connect);
+        $result = $mt_user->DealGetPage($login, $from, $to, $offset, $total, $deals);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $deals;
+    }
+
+    public function getDeal($ticket)
+    {
+        $deal = null;
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_user = new MTDealProtocol($this->m_connect);
+        $result = $mt_user->DealGet($ticket, $deal);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $deal;
+    }
+
 }
