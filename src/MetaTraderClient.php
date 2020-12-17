@@ -210,7 +210,7 @@ class MetaTraderClient
         return $logins;
     }
 
-    public function getUserBatch($group)
+    public function getUserBatch($login)
     {
         $logins = null;
         if (!$this->isConnected()) {
@@ -223,7 +223,7 @@ class MetaTraderClient
 
         $mt_user = new MTUserProtocol($this->m_connect);
 
-        $result = $mt_user->UserGetBatch($group, $logins);
+        $result = $mt_user->UserGetBatch($login, $logins);
         if ($result != MTRetCode::MT_RET_OK) {
             throw new UserException(MTRetCode::GetError($result));
         }
