@@ -159,6 +159,9 @@ class MetaTraderClient
         }
         $mt_user = new MTUserProtocol($this->m_connect);
         $mtUser = MTUser::CreateDefault();
+        if ($user->getLogin()) {
+            $mtUser->Login = $user->getLogin();
+        }
         $mtUser->Group = $user->getGroup();
         $mtUser->Name = $user->getName();
         $mtUser->Email = $user->getEmail();
@@ -224,6 +227,26 @@ class MetaTraderClient
         $mt_user = new MTUserProtocol($this->m_connect);
 
         $result = $mt_user->UserGetBatch($login, $logins);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $logins;
+    }
+
+    public function getAccountsBatch($login)
+    {
+        $logins = null;
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+
+        $mt_user = new MTUserProtocol($this->m_connect);
+
+        $result = $mt_user->UserAccountGetBatch($login, $logins);
         if ($result != MTRetCode::MT_RET_OK) {
             throw new UserException(MTRetCode::GetError($result));
         }

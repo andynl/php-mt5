@@ -91,6 +91,7 @@ class MTProtocolConsts
     const WEB_CMD_USER_ACCOUNT_GET = "USER_ACCOUNT_GET"; // account info get
     const WEB_CMD_USER_USER_LOGINS = "USER_LOGINS"; // users logins get
     const WEB_CMD_USER_USER_GET_BATCH = "USER_GET_BATCH"; // users logins get
+    const WEB_CMD_USER_USER_ACCOUNT_GET_BATCH = "USER_ACCOUNT_GET_BATCH"; // users logins get
     //--- password type
     const WEB_VAL_USER_PASS_MAIN     = "MAIN";
     const WEB_VAL_USER_PASS_INVESTOR = "INVESTOR";

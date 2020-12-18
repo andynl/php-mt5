@@ -533,6 +533,41 @@ class MTUserProtocol
         return MTRetCode::MT_RET_OK;
     }
 
+    public function UserAccountGetBatch($group, &$logins)
+    {
+        $data = array(MTProtocolConsts::WEB_PARAM_LOGIN => $group);
+
+        //--- send request
+        if(!$this->m_connect->Send(MTProtocolConsts::WEB_CMD_USER_USER_ACCOUNT_GET_BATCH, $data))
+        {
+
+            if(MTLogger::getIsWriteLog()) MTLogger::write(MTLoggerType::ERROR, 'send user logins get failed');
+            return MTRetCode::MT_RET_ERR_NETWORK;
+        }
+
+        //--- get answer
+        if(($answer = $this->m_connect->Read()) == null)
+        {
+            if(MTLogger::getIsWriteLog()) MTLogger::write(MTLoggerType::ERROR, 'answer user logins get is empty');
+            return MTRetCode::MT_RET_ERR_NETWORK;
+        }
+
+        $user_logins = null;
+        //--- parse answer
+        if(($error_code = $this->ParseUserAccountBatch($answer, $user_logins)) != MTRetCode::MT_RET_OK)
+        {
+
+            if(MTLogger::getIsWriteLog()) MTLogger::write(MTLoggerType::ERROR, 'parse user logins get failed: [' . $error_code . '] ' . MTRetCode::GetError($error_code));
+            return $error_code;
+        }
+
+        //---
+        $logins = $user_logins->GetArrayFromJson();
+
+        //---
+        return MTRetCode::MT_RET_OK;
+    }
+
     /**
      * parsing answer for command user_logins
      *
@@ -586,6 +621,34 @@ class MTUserProtocol
         if($command_real != MTProtocolConsts::WEB_CMD_USER_USER_GET_BATCH) return MTRetCode::MT_RET_ERR_DATA;
         //---
         $user_account = new MTUserBatchAnswer();
+        //--- get param
+        $pos_end = -1;
+        while(($param = $this->m_connect->GetNextParam($answer, $pos, $pos_end)) != null)
+        {
+            switch($param['name'])
+            {
+                case MTProtocolConsts::WEB_PARAM_RETCODE:
+                    $user_account->RetCode = $param['value'];
+                    break;
+            }
+        }
+        //--- check ret code
+        if(($ret_code = MTConnect::GetRetCode($user_account->RetCode)) != MTRetCode::MT_RET_OK) return $ret_code;
+        //--- get json
+        if(($user_account->ConfigJson = $this->m_connect->GetJson($answer, $pos_end)) == null) return MTRetCode::MT_RET_REPORT_NODATA;
+        //---
+        return MTRetCode::MT_RET_OK;
+    }
+
+    private function ParseUserAccountBatch($answer, &$user_account)
+    {
+        $pos = 0;
+        //--- get command answer
+        $command_real = $this->m_connect->GetCommand($answer, $pos);
+
+        if($command_real != MTProtocolConsts::WEB_CMD_USER_USER_ACCOUNT_GET_BATCH) return MTRetCode::MT_RET_ERR_DATA;
+        //---
+        $user_account = new MTUserAccountAnswer();
         //--- get param
         $pos_end = -1;
         while(($param = $this->m_connect->GetNextParam($answer, $pos, $pos_end)) != null)
@@ -1909,6 +1972,27 @@ class MTUserAccountAnswer
         $result->MarginMaintenance = (float)$obj->MarginMaintenance;
         //---
         $obj = null;
+        //---
+        return $result;
+    }
+
+    /**
+     * From json get class MTUser
+     * @return array(MTOrder)
+     */
+    public function GetArrayFromJson()
+    {
+        $objects = MTJson::Decode($this->ConfigJson);
+        if ($objects == null) return null;
+        $result = array();
+        //---
+        foreach ($objects as $obj) {
+            $info = MTAccountJson::GetFromJson($obj);
+            //---
+            $result[] = $info;
+        }
+        //---
+        $objects = null;
         //---
         return $result;
     }
