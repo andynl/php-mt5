@@ -27,9 +27,9 @@ use Tarikh\PhpMeta\Lib\MTDealProtocol;
 
 //+------------------------------------------------------------------+
 //--- web api version
-define("WebAPIVersion", 2190);
+define("WebAPIVersion", 2980);
 //--- web api date
-define("WebAPIDate", "18 Oct 2019");
+define("WebAPIDate", "18 June 2021");
 
 class MetaTraderClient
 {
