@@ -73,13 +73,58 @@ $result = $api->createUser($user);
 
 The result variable will return User class with login information, you can grab login number by calling ``$result->getLogin()``
 
+### Change Client Password
+```php
+use Tarikh\PhpMeta\MetaTraderClient;
+
+$server = "SERVER_MT4_IP";
+$port = 443;
+$login = "MANAGER LOGIN";
+$password = "API PASSWORD";
+$exampleLogin = 21001480007;
+
+$client = new MetaTraderClient($server, $port, $login, $password);
+// $type = "MAIN"; // Change $type to INVESTOR if you want to change investor password
+$api->changePasswordUser($exampleLogin, 'SecurePassword', $type);
+```
+
+### Get Order By Ticket ID
+```php
+use Tarikh\PhpMeta\MetaTraderClient;
+
+$server = "SERVER_MT4_IP";
+$port = 443;
+$login = "MANAGER LOGIN";
+$password = "API PASSWORD";
+$exampleLogin = 21001480007;
+
+$client = new MetaTraderClient($server, $port, $login, $password);
+$order = $api->getOrder($ticket = 100);
+```
+
+### Get User Information
+```php
+use Tarikh\PhpMeta\MetaTraderClient;
+
+$server = "SERVER_MT4_IP";
+$port = 443;
+$login = "MANAGER LOGIN";
+$password = "API PASSWORD";
+$exampleLogin = 21001480007;
+
+$client = new MetaTraderClient($server, $port, $login, $password);
+$user = $api->getUser($exampleLogin);
+var_dump($user);
+```
+
+
 ### Todo
 
 - [x] Deposit or Withdrawal
 - [x] Create Account
-- [ ] Change Password
-- [ ] Create Group
-- [ ] Delete Group
+- [x] Change Password
+- [x] Get Order By Ticket ID
+- [x] Get User Information
 - [ ] Get Accounts
 - [ ] Remove Account
 - [ ] Get Trades
