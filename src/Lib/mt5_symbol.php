@@ -478,7 +478,7 @@ class MTSymbolAnswer
     $obj = MTJson::Decode($this->ConfigJson);
     if($obj == null)
        return null;
-    
+
     $result = new MTConSymbol();
     //---
     $result->Symbol               = (string)$obj->Symbol;
@@ -615,66 +615,66 @@ class MTSymbolAnswer
     {
      $result = MTConSymbol::GetDefaultMarginRate();
      $new    = false;
-    
+
      if(isset($obj->MarginInitialBuy))
        {
         $result[MTEnMarginRateTypes::MARGIN_RATE_BUY] = $obj->MarginInitialBuy;
         $new = true;
        }
-       
+
      if(isset($obj->MarginInitialSell))
        {
         $result[MTEnMarginRateTypes::MARGIN_RATE_SELL] = $obj->MarginInitialSell;
         $new = true;
        }
-       
+
      if(isset($obj->MarginInitialBuyLimit))
        {
         $result[MTEnMarginRateTypes::MARGIN_RATE_BUY_LIMIT] = $obj->MarginInitialBuyLimit;
         $new = true;
        }
-       
+
      if(isset($obj->MarginInitialSellLimit))
        {
         $result[MTEnMarginRateTypes::MARGIN_RATE_SELL_LIMIT] = $obj->MarginInitialSellLimit;
         $new = true;
        }
-       
+
      if(isset($obj->MarginInitialBuyStop))
        {
         $result[MTEnMarginRateTypes::MARGIN_RATE_BUY_STOP] = $obj->MarginInitialBuyStop;
         $new = true;
        }
-       
+
      if(isset($obj->MarginInitialSellStop))
        {
         $result[MTEnMarginRateTypes::MARGIN_RATE_SELL_STOP] = $obj->MarginInitialSellStop;
         $new = true;
        }
-       
+
      if(isset($obj->MarginInitialBuyStopLimit))
        {
         $result[MTEnMarginRateTypes::MARGIN_RATE_BUY_STOP_LIMIT] = $obj->MarginInitialBuyStopLimit;
         $new = true;
        }
-       
+
      if(isset($obj->MarginInitialSellStopLimit))
        {
         $result[MTEnMarginRateTypes::MARGIN_RATE_SELL_STOP_LIMIT] = $obj->MarginInitialSellStopLimit;
         $new = true;
        }
-     
+
      if(!$new)
         $this->OldMarginRateInitialConvert($symbol, $obj);
      else
        {
         $symbol->MarginRateInitial = $result;
         $this->OldMarginRateInitialSet($symbol, $obj);
-       } 
+       }
     }
 
   /**
-   * convert from deprecated values to actual 
+   * convert from deprecated values to actual
    */
   private function OldMarginRateInitialConvert(&$symbol, $obj)
     {
@@ -696,7 +696,7 @@ class MTSymbolAnswer
      if(isset($obj->MarginLimit))
        {
         $symbol->MarginLimit = (float)$obj->MarginLimit;
-        
+
         $result[MTEnMarginRateTypes::MARGIN_RATE_BUY_LIMIT]  = $symbol->MarginLimit * $symbol->MarginLong;
         $result[MTEnMarginRateTypes::MARGIN_RATE_SELL_LIMIT] = $symbol->MarginLimit * $symbol->MarginShort;
        }
@@ -704,7 +704,7 @@ class MTSymbolAnswer
      if(isset($obj->MarginStop))
        {
         $symbol->MarginStop = (float)$obj->MarginStop;
-        
+
         $result[MTEnMarginRateTypes::MARGIN_RATE_BUY_STOP]  = $symbol->MarginStop * $symbol->MarginLong;
         $result[MTEnMarginRateTypes::MARGIN_RATE_SELL_STOP] = $symbol->MarginStop * $symbol->MarginShort;
        }
@@ -712,29 +712,29 @@ class MTSymbolAnswer
      if(isset($obj->MarginStopLimit))
        {
         $symbol->MarginStopLimit = (float)$obj->MarginStopLimit;
-        
+
         $result[MTEnMarginRateTypes::MARGIN_RATE_BUY_STOP_LIMIT]  = $symbol->MarginStopLimit * $symbol->MarginLong;
         $result[MTEnMarginRateTypes::MARGIN_RATE_SELL_STOP_LIMIT] = $symbol->MarginStopLimit * $symbol->MarginShort;
        }
-       
-     $symbol->MarginRateInitial = $result; 
+
+     $symbol->MarginRateInitial = $result;
     }
 
   /**
-   * set deprecated values for compatibility 
+   * set deprecated values for compatibility
    */
    private function OldMarginRateInitialSet(&$symbol, $obj)
      {
       $symbol->MarginLong  = $symbol->MarginRateInitial[MTEnMarginRateTypes::MARGIN_RATE_BUY];
       $symbol->MarginShort = $symbol->MarginRateInitial[MTEnMarginRateTypes::MARGIN_RATE_SELL];
 
-      $marginLimitLong     = 0; 
-      $marginStopLong      = 0; 
-      $marginStopLimitLong = 0; 
+      $marginLimitLong     = 0;
+      $marginStopLong      = 0;
+      $marginStopLimitLong = 0;
 
-      $marginLimitShort     = 0; 
-      $marginStopShort      = 0; 
-      $marginStopLimitShort = 0; 
+      $marginLimitShort     = 0;
+      $marginStopShort      = 0;
+      $marginStopLimitShort = 0;
 
       if($symbol->MarginLong!=0)
         {
@@ -845,7 +845,7 @@ class MTEnFillingFlags
   const FILL_FLAGS_FIRST = MTEnFillingFlags::FILL_FLAGS_FOK;
   const FILL_FLAGS_ALL   = 3; //MTEnFillingFlags::FILL_FLAGS_FOK | MTEnFillingFlags::FILL_FLAGS_IOC;
   }
-  
+
 /**
  * allowed order expiration modes flags
  */
@@ -860,7 +860,7 @@ class  MTEnExpirationFlags
   const TIME_FLAGS_FIRST = MTEnExpirationFlags::TIME_FLAGS_GTC;
   const TIME_FLAGS_ALL   = 15; // TIME_FLAGS_GTC|TIME_FLAGS_DAY|TIME_FLAGS_SPECIFIED|TIME_FLAGS_SPECIFIED_DAY
   }
-  
+
 /**
  * allowed order flags
  * Class MTEnOrderFlags
@@ -879,7 +879,7 @@ class MTEnOrderFlags
   const ORDER_FLAGS_FIRST = MTEnOrderFlags::ORDER_FLAGS_MARKET;
   const ORDER_FLAGS_ALL   = 127; // ORDER_FLAGS_MARKET|ORDER_FLAGS_LIMIT|ORDER_FLAGS_STOP|ORDER_FLAGS_STOP_LIMIT|ORDER_FLAGS_SL|ORDER_FLAGS_TP|ORDER_FLAGS_CLOSEBY
   }
-  
+
   /**
    * allowed trade modes
    */
@@ -893,7 +893,7 @@ class  MTEnTradeMode
   //--- enumeration borders
   const TRADE_FIRST = MTEnTradeMode::TRADE_DISABLED;
   const TRADE_LAST  = MTEnTradeMode::TRADE_FULL;
-  
+
   /**
    * Get object
    *
@@ -929,7 +929,7 @@ class  MTEnTradeMode
       }
     }
   }
-  
+
 /**
  * order execution modes
  */
@@ -943,7 +943,7 @@ class  MTEnExecutionMode
   const EXECUTION_FIRST = MTEnExecutionMode::EXECUTION_REQUEST;
   const EXECUTION_LAST  = MTEnExecutionMode::EXECUTION_EXCHANGE;
   }
-  
+
 /**
  * profit and margin calculation modes
  */
@@ -980,7 +980,7 @@ class  MTEnCalcMode
   const TRADE_MODE_FIRST = MTEnCalcMode::TRADE_MODE_FOREX;
   const TRADE_MODE_LAST  = MTEnCalcMode::TRADE_MODE_SERV_COLLATERAL;
   }
-  
+
 /**
  * orders expiration modes
  */
@@ -993,7 +993,7 @@ class  MTEnGTCMode
   const ORDERS_FIRST = MTEnGTCMode::ORDERS_GTC;
   const ORDERS_LAST  = MTEnGTCMode::ORDERS_DAILY_NO_STOPS;
   }
-  
+
 /**
  * tick collection flags
  */
@@ -1006,7 +1006,7 @@ class  MTEnTickFlags
   const TICK_NONE = 0;
   const TICK_ALL  = 7; // TICK_REALTIME | TICK_COLLECTRAW | TICK_FEED_STATS
   }
-  
+
 /**
  * chart mode
  */
@@ -1019,7 +1019,7 @@ class MTEnChartMode
   const CHART_MODE_FIRST = MTEnChartMode::CHART_MODE_BID_PRICE;
   const CHART_MODE_LAST  = MTEnChartMode::CHART_MODE_OLD;
   }
-  
+
 /**
  * margin check modes
  */
@@ -1033,7 +1033,7 @@ class  MTEnMarginFlags
   const MARGIN_FLAGS_FIRST = MTEnMarginFlags::MARGIN_FLAGS_NONE;
   const MARGIN_FLAGS_LAST  = MTEnMarginFlags::MARGIN_FLAGS_HEDGE_LARGE_LEG;
   }
-  
+
 /**
  * swaps calculation modes
  */
@@ -1053,7 +1053,7 @@ class MTEnSwapMode
   const SWAP_FIRST = MTEnSwapMode::SWAP_DISABLED;
   const SWAP_LAST  = MTEnSwapMode::SWAP_BY_PROFIT_CURRENCY;
   }
-  
+
 /**
  * Instant Execution Modes
  */
@@ -1064,7 +1064,7 @@ class  MTEnInstantMode
   const INSTANT_CHECK_FIRST = MTEnInstantMode::INSTANT_CHECK_NORMAL;
   const INSTANT_CHECK_LAST  = MTEnInstantMode::INSTANT_CHECK_NORMAL;
   }
-  
+
 /**
  * Request Execution Flags
  */
@@ -1075,7 +1075,7 @@ class MTEnRequestFlags
   //--- flags borders
   const REQUEST_FLAGS_ALL = MTEnRequestFlags::REQUEST_FLAGS_ORDER;
   }
-  
+
 /**
  * common trade flags
  */
@@ -1088,26 +1088,8 @@ class MTEnTradeFlags
   const TRADE_FLAGS_ALL     = 3; // TRADE_FLAGS_PROFIT_BY_MARKET | TRADE_FLAGS_ALLOW_SIGNALS
   const TRADE_FLAGS_DEFAULT = MTEnTradeFlags::TRADE_FLAGS_ALLOW_SIGNALS;
   }
-  
-/**
- * Margin Rate Types
- * Class MTEnMarginRateTypes
- */
-class MTEnMarginRateTypes
-  {
-  const MARGIN_RATE_BUY             = 0;
-  const MARGIN_RATE_SELL            = 1;
-  const MARGIN_RATE_BUY_LIMIT       = 2;
-  const MARGIN_RATE_SELL_LIMIT      = 3;
-  const MARGIN_RATE_BUY_STOP        = 4;
-  const MARGIN_RATE_SELL_STOP       = 5;
-  const MARGIN_RATE_BUY_STOP_LIMIT  = 6;
-  const MARGIN_RATE_SELL_STOP_LIMIT = 7;
-  //--- enumeration borders
-  const MARGIN_RATE_FIRST = MTEnMarginRateTypes::MARGIN_RATE_BUY;
-  const MARGIN_RATE_LAST  = MTEnMarginRateTypes::MARGIN_RATE_SELL_STOP_LIMIT;
-  }
-  
+
+
 /**
  * Options Mode
  * Class MTEnOptionMode
@@ -1122,7 +1104,7 @@ class MTEnOptionMode
   const OPTION_MODE_FIRST = MTEnOptionMode::OPTION_MODE_EUROPEAN_CALL;
   const OPTION_MODE_LAST  = MTEnOptionMode::OPTION_MODE_AMERICAN_PUT;
   }
-  
+
 /**
  * Splice Type
  * Class MTEnSpliceType
@@ -1136,7 +1118,7 @@ class MTEnSpliceType
   const SPLICE_FIRST = MTEnSpliceType::SPLICE_NONE;
   const SPLICE_LAST  = MTEnSpliceType::SPLICE_ADJUSTED;
   }
-  
+
 /**
  * Splice Time Type
  * Class MTEnSpliceTimeType
@@ -1149,586 +1131,6 @@ class MTEnSpliceTimeType
   const SPLICE_TIME_LAST  = MTEnSpliceTimeType::SPLICE_TIME_EXPIRATION;
   }
 
-/**
- * class config symbol
- */
-class MTConSymbol
-  {
-  /**
-   * name
-   * @var string
-   */
-  public $Symbol;
-  /**
-   * hierarchical symbol path (including symbol name)
-   * @var string
-   */
-  public $Path;
-  /**
-   * ISIN
-   * @var string
-   */
-  public $ISIN;
-  /**
-   * local description
-   * @var string
-   */
-  public $Description;
-  /**
-   * internation description
-   * @var string
-   */
-  public $International;
-  /**
-   * basic symbol name
-   * @var string
-   */
-  public $Basis;
-  /**
-   * source symbol name
-   * @var string
-   */
-  public $Source;
-  /**
-   * symbol specification page URL
-   * @var string
-   */
-  public $Page;
-  /**
-   * symbol base currency
-   * @var string
-   */
-  public $CurrencyBase;
-  /**
-   * symbol base currency digits
-   * @var int
-   */
-  public $CurrencyBaseDigits;
-  /**
-   * symbol profit currency
-   * @var string
-   */
-  public $CurrencyProfit;
-  /**
-   * symbol profit currency digits
-   * @var int
-   */
-  public $CurrencyProfitDigits;
-  /**
-   * symbol margin currency
-   * @var string
-   */
-  public $CurrencyMargin;
-  /**
-   * symbol margin currency digits
-   * @var int
-   */
-  public $CurrencyMarginDigits;
-  /**
-   * symbol color
-   * @var int
-   */
-  public $Color;
-  /**
-   * symbol background color
-   * @var int
-   */
-  public $ColorBackground;
-  /**
-   * symbol digits
-   * @var int
-   */
-  public $Digits;
-  /**
-   * symbol digits derivation (1/10^digits & 10^digits)
-   * @var double
-   */
-  public $Point;
-  /**
-   * Multiply
-   * @var double
-   */
-  public $Multiply;
-  /**
-   * MTEnTickFlags
-   * @var MTEnTickFlags
-   */
-  public $TickFlags;
-  /**
-   * Depth of Market depth (both legs)
-   * @var int
-   */
-  public $TickBookDepth;
-  /**
-   * chart mode
-   * @var MTEnChartMode
-   */
-  public $ChartMode;
-  /**
-   * filtration soft level
-   * @var int
-   */
-  public $FilterSoft;
-  /**
-   * filtration soft level counter
-   * @var int
-   */
-  public $FilterSoftTicks;
-  /**
-   * filtration hard level
-   * @var int
-   */
-  public $FilterHard;
-  /**
-   * filtration hard level counter
-   * @var int
-   */
-  public $FilterHardTicks;
-  /**
-   * filtration discard level
-   * @var int
-   */
-  public $FilterDiscard;
-  /**
-   * spread max value
-   * @var int
-   */
-  public $FilterSpreadMax;
-  /**
-   * spread min value
-   * @var int
-   */
-  public $FilterSpreadMin;
-  /**
-   * gap level
-   * @var int
-   */
-  public $FilterGap;
-  /**
-   * gap level ticks
-   * @var int
-   */
-  public $FilterGapTicks;
-  /**
-   * @var MTEnTradeMode
-   */
-  public $TradeMode;
-  /**
-   * @var MTEnTradeFlags
-   */
-  public $TradeFlags;
-  /**
-   * @var MTEnCalcMode
-   */
-  public $CalcMode;
-  /**
-   * @var MTEnExecutionMode
-   */
-  public $ExecMode;
-  /**
-   * @var MTEnGTCMode
-   */
-  public $GTCMode;
-  /**
-   * @var MTEnFillingFlags
-   */
-  public $FillFlags;
-  /**
-   * @var MTEnExpirationFlags
-   */
-  public $ExpirFlags;
-  /**
-   * @var MTEnOrderFlags
-   */
-  public $OrderFlags;
-  /**
-   * symbol spread (0-floating)
-   * @var int
-   */
-  public $Spread;
-  /**
-   * spread balance
-   * @var int
-   */
-  public $SpreadBalance;
-  /**
-   * spread difference
-   * @var int
-   */
-  public $SpreadDiff;
-  /**
-   * spread difference balance
-   * @var int
-   */
-  public $SpreadDiffBalance;
-  /**
-   * tick value
-   * @var double
-   */
-  public $TickValue;
-  /**
-   * tick size
-   * @var double
-   */
-  public $TickSize;
-  /**
-   * contract size
-   * @var double
-   */
-  public $ContractSize;
-  /**
-   * stops level
-   * @var int
-   */
-  public $StopsLevel;
-  /**
-   * freeze level
-   * @var int
-   */
-  public $FreezeLevel;
-  /**
-   * quotes timeout
-   * @var int
-   */
-  public $QuotesTimeout;
-  /**
-   * minimal volume
-   * @var int
-   */
-  public $VolumeMin;
-  /**
-   * minimal volume
-   * @var int
-   */
-  public $VolumeMinExt;
-  /**
-   * maximal volume
-   * @var int
-   */
-  public $VolumeMax;
-  /**
-   * maximal volume
-   * @var int
-   */
-  public $VolumeMaxExt;
-  /**
-   * volume step
-   * @var int
-   */
-  public $VolumeStep;
-  /**
-   * volume step
-   * @var int
-   */
-  public $VolumeStepExt;
-  /**
-   * cumulative positions and orders limit
-   * @var int
-   */
-  public $VolumeLimit;
-  /**
-   * cumulative positions and orders limit
-   * @var int
-   */
-  public $VolumeLimitExt;
-  /**
-   * @var MTEnMarginFlags
-   */
-  public $MarginFlags;
-  /**
-   * initial margin
-   * @var double
-   */
-  public $MarginInitial;
-  /**
-   * maintenance margin
-   * @var double
-   */
-  public $MarginMaintenance;
-  /**
-   * orders and positions margin rates
-   * @var array
-   */
-  public $MarginRateInitial;
-  /**
-   * orders and positions margin rates
-   * @var array
-   */
-  public $MarginRateMaintenance;
-  /**
-   * orders and positions margin rates
-   * @var double
-   */
-  public $MarginRateLiquidity;
-  /**
-   * hedged positions margin rate
-   * @var double
-   */
-  public $MarginHedged;
-  /**
-   * margin currency rate
-   * @var double
-   */
-  public $MarginRateCurrency;
-  /**
-   * long orders and positions margin rate
-   * @deprecated should use MarginRateInitial and MarginRateMaintenance 
-   * @var double
-   */
-  public $MarginLong;
-  /**
-   * short orders and positions margin rate
-   * @deprecated should use MarginRateInitial and MarginRateMaintenance
-   * @var double
-   */
-  public $MarginShort;
-  /**
-   * limit orders and positions margin rate
-   * @deprecated should use MarginRateInitial and MarginRateMaintenance
-   * @var double
-   */
-  public $MarginLimit;
-  /**
-   * stop orders and positions margin rate
-   * @deprecated should use MarginRateInitial and MarginRateMaintenance
-   * @var double
-   */
-  public $MarginStop;
-  /**
-   * stop-limit orders and positions margin rate
-   * @deprecated should use MarginRateInitial and MarginRateMaintenance
-   * @var double
-   */
-  public $MarginStopLimit;
-  /**
-   * @deprecated should use MarginRateInitial and MarginRateMaintenance
-   * @var MTEnSwapMode
-   */
-  public $SwapMode;
-  /**
-   * long positions swaps rate
-   * @var double
-   */
-  public $SwapLong;
-  /**
-   * short positions swaps rate
-   * @var double
-   */
-  public $SwapShort;
-  /**
-   * 3 time swaps day
-   * @var int
-   */
-  public $Swap3Day;
-  /**
-   * trade start date
-   * @var int
-   */
-  public $TimeStart;
-  /**
-   * trade end date
-   * @var int
-   */
-  public $TimeExpiration;
-  /**
-   * quote sessions
-   * @var array
-   */
-  public $SessionsQuotes;
-  /**
-   * trade sessions
-   * @var array
-   */
-  public $SessionsTrades;
-  /**
-   * request execution flags
-   * @var MTEnRequestFlags
-   */
-  public $REFlags;
-  /**
-   * request execution timeout
-   * @var int
-   */
-  public $RETimeout;
-  /**
-   * instant execution check mode MTEnInstantMode
-   * @var MTEnInstantMode
-   */
-  public $IECheckMode;
-  /**
-   * instant execution timeout
-   * @var int
-   */
-  public $IETimeout;
-  /**
-   * instant execution profit slippage
-   * @var int
-   */
-  public $IESlipProfit;
-  /**
-   * instant execution losing slippage
-   * @var int
-   */
-  public $IESlipLosing;
-  /**
-   * instant execution max volume
-   * @var int
-   */
-  public $IEVolumeMax;
-  /**
-   * instant execution max volume
-   * @var int
-   */
-  public $IEVolumeMaxExt;
-  /**
-   * settle price (for futures)
-   * @var double
-   */
-  public $PriceSettle;
-  /**
-   * price limit max (for futures)
-   * @var double
-   */
-  public $PriceLimitMax;
-  /**
-   * price limit min (for futures)
-   * @var double
-   */
-  public $PriceLimitMin;
-  /**
-   * option strike price value
-   * @var double
-   */
-  public $PriceStrike;
-  /**
-   * @var MTEnOptionMode
-   */
-  public $OptionsMode;
-  /**
-   * @var double
-   */
-  public $FaceValue;
-  /**
-   * @var double
-   */
-  public $AccruedInterest;
-  /**
-   * @var MTEnSpliceType
-   */
-  public $SpliceType;
-  /**
-   * @var MTEnSpliceTimeType
-   */
-  public $SpliceTimeType;
-  /**
-   * @var int
-   */
-  public $SpliceTimeDays;
-
-  /**
-   * Create MTConSymbol with default values
-   * @return MTConSymbol
-   */
-  public static function CreateDefault()
-    {
-    $symbol = new MTConSymbol();
-    //---
-    $symbol->CurrencyBase          = "USD";
-    $symbol->CurrencyProfit        = "USD";
-    $symbol->CurrencyMargin        = "USD";
-    $symbol->Digits                = 4;
-    $symbol->TickBookDepth         = 0;
-    $symbol->TickFlags             = MTEnTickFlags::TICK_REALTIME;
-    $symbol->FilterDiscard         = 500;
-    $symbol->FilterSoftTicks       = 10;
-    $symbol->FilterHardTicks       = 10;
-    $symbol->FilterHard            = 500;
-    $symbol->FilterSoft            = 100;
-    $symbol->FilterSpreadMax       = 0;
-    $symbol->FilterSpreadMin       = 0;
-    $symbol->TradeMode             = MTEnTradeMode::TRADE_FULL;
-    $symbol->TradeFlags            = MTEnTradeFlags::TRADE_FLAGS_DEFAULT;
-    $symbol->Spread                = 0;
-    $symbol->SpreadBalance         = 0;
-    $symbol->TickValue             = 0;
-    $symbol->TickSize              = 0;
-    $symbol->ContractSize          = 100000;
-    $symbol->GTCMode               = MTEnGTCMode::ORDERS_GTC;
-    $symbol->CalcMode              = MTEnCalcMode::TRADE_MODE_FOREX;
-    $symbol->QuotesTimeout         = 0;
-    $symbol->PriceSettle           = 0;
-    $symbol->PriceLimitMax         = 0;
-    $symbol->PriceLimitMin         = 0;
-    $symbol->TimeStart             = 0;
-    $symbol->TimeExpiration        = 0;
-    $symbol->SpreadDiff            = 0;
-    $symbol->SpreadDiffBalance     = 0;
-    $symbol->StopsLevel            = 5;
-    $symbol->FreezeLevel           = 0;
-    $symbol->ExecMode              = MTEnExecutionMode::EXECUTION_INSTANT;
-    $symbol->FillFlags             = MTEnFillingFlags::FILL_FLAGS_FOK;
-    $symbol->ExpirFlags            = MTEnExpirationFlags::TIME_FLAGS_ALL;
-    $symbol->REFlags               = MTEnRequestFlags::REQUEST_FLAGS_NONE;
-    $symbol->RETimeout             = 7;
-    $symbol->IETimeout             = 7;
-    $symbol->IESlipProfit          = 2;
-    $symbol->IESlipLosing          = 2;
-    $symbol->IEVolumeMax           = 0;
-    $symbol->IECheckMode           = MTEnInstantMode::INSTANT_CHECK_NORMAL;
-    $symbol->VolumeMin             = 0;
-    $symbol->VolumeMax             = 100000;
-    $symbol->VolumeMaxExt          = MTUtils::ToNewVolume($symbol->VolumeMax);
-    $symbol->VolumeStep            = 10000;
-    $symbol->VolumeStepExt         = MTUtils::ToNewVolume($symbol->VolumeStep);
-    $symbol->VolumeLimit           = 0;
-    $symbol->MarginFlags           = MTEnMarginFlags::MARGIN_FLAGS_NONE;
-    $symbol->MarginInitial         = 0;
-    $symbol->MarginMaintenance     = 0;
-    $symbol->MarginRateInitial     = self::GetDefaultMarginRate();
-    $symbol->MarginRateMaintenance = self::GetDefaultMarginRate();
-    $symbol->MarginRateLiquidity   = 0;
-    $symbol->MarginHedged          = 0;
-    $symbol->MarginRateCurrency    = 0;
-    //--- DEPRECATED
-    $symbol->MarginLong            = 1;
-    $symbol->MarginShort           = 1;
-    $symbol->MarginLimit           = 0;
-    $symbol->MarginStop            = 0;
-    $symbol->MarginStopLimit       = 0;
-    //---
-    $symbol->SwapMode              = MTEnSwapMode::SWAP_DISABLED;
-    $symbol->SwapLong              = 0;
-    $symbol->SwapShort             = 0;
-    $symbol->Swap3Day              = 3;
-    $symbol->OrderFlags            = MTEnOrderFlags::ORDER_FLAGS_ALL;
-    $symbol->OptionsMode           = MTEnOptionMode::OPTION_MODE_EUROPEAN_CALL;
-    $symbol->PriceStrike           = 0;
-    //---
-    $symbol->FaceValue             = 0;
-    $symbol->AccruedInterest       = 0;
-    $symbol->SpliceType            = MTEnSpliceType::SPLICE_NONE;
-    $symbol->SpliceTimeType        = MTEnSpliceTimeType::SPLICE_TIME_EXPIRATION;
-    $symbol->SpliceTimeDays        = 0;
-    //---
-    return $symbol;
-    }
-
-  /**
-   * Get dafault Margin rate
-   * @return array
-   */
-  public static function GetDefaultMarginRate()
-    {
-    return array(MTEnMarginRateTypes::MARGIN_RATE_BUY             => 0.0,
-                 MTEnMarginRateTypes::MARGIN_RATE_SELL            => 0.0,
-                 MTEnMarginRateTypes::MARGIN_RATE_BUY_LIMIT       => 0.0,
-                 MTEnMarginRateTypes::MARGIN_RATE_SELL_LIMIT      => 0.0,
-                 MTEnMarginRateTypes::MARGIN_RATE_BUY_STOP        => 0.0,
-                 MTEnMarginRateTypes::MARGIN_RATE_SELL_STOP       => 0.0,
-                 MTEnMarginRateTypes::MARGIN_RATE_BUY_STOP_LIMIT  => 0.0,
-                 MTEnMarginRateTypes::MARGIN_RATE_SELL_STOP_LIMIT => 0.0);
-    }
-  }
 
 /**
  * hedging flags

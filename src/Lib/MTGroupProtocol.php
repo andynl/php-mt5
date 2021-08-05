@@ -2,7 +2,7 @@
 
 
 namespace Tarikh\PhpMeta\Lib;
-
+use \Tarikh\PhpMeta\Lib\MTConSymbol;
 
 /**
  * Class for send request group_total, group_next, group_get
@@ -512,7 +512,6 @@ class MTGroupAnswer
 
         if($obj == null)
             return null;
-
         $result = new MTConGroup();
         //---
         $result->Group                = (string)$obj->Group;
@@ -531,9 +530,6 @@ class MTGroupAnswer
         $result->CurrencyDigits       = (int)$obj->CurrencyDigits;
         $result->ReportsMode          = (int)$obj->ReportsMode;
         $result->ReportsFlags         = (int)$obj->ReportsFlags;
-        $result->ReportsSMTP          = (string)$obj->ReportsSMTP;
-        $result->ReportsSMTPLogin     = (string)$obj->ReportsSMTPLogin;
-        $result->ReportsSMTPPass      = (string)$obj->ReportsSMTPPass;
         $result->NewsMode             = (int)$obj->NewsMode;
         $result->NewsCategory         = (string)$obj->NewsCategory;
         $result->NewsLangs            = (array)$obj->NewsLangs;
