@@ -12,6 +12,7 @@ $password = "API PASSWORD";
 $exampleLogin = 21001480007;
 
 $api = new MetaTraderClient($server, $port, $login, $password);
+$user = $api->getUser($exampleLogin);
 
 /**
  * User Function

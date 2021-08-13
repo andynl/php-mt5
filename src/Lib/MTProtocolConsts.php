@@ -68,6 +68,10 @@ class MTProtocolConsts
     //--- crypt
     const WEB_PARAM_CRYPT_METHOD = "CRYPT_METHOD"; // method of crypt
     const WEB_PARAM_CRYPT_RAND = "CRYPT_RAND"; // random string for crypt
+    //--- dealer
+    const WEB_PARAM_ACTION = "ACTION"; // random string for crypt
+    const WEB_PARAM_VOLUME = "VOLUME"; // random string for crypt
+    const WEB_PARAM_TYPE_FILL = "TYPE_FILL"; // random string for crypt
     //--- group
     const WEB_CMD_GROUP_TOTAL = "GROUP_TOTAL"; // get count groups
     const WEB_CMD_GROUP_NEXT = "GROUP_NEXT"; // get next group
@@ -131,4 +135,5 @@ class MTProtocolConsts
     const WEB_CMD_TRADE_BALANCE = "TRADE_BALANCE";
     //--- server restart
     const WEB_CMD_SERVER_RESTART = "SERVER_RESTART";
+    const WEB_CMD_DEALER_SEND = "DEALER_SEND";
 }

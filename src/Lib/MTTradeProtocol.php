@@ -4,6 +4,9 @@
 namespace Tarikh\PhpMeta\Lib;
 
 
+use Tarikh\PhpMeta\Entities\Order;
+use function Couchbase\defaultDecoder;
+
 class MTTradeProtocol
 {
     private $m_connect; // connection to MT5 server
@@ -95,6 +98,49 @@ class MTTradeProtocol
 
         //--- check ret code
         if(($ret_code = MTConnect::GetRetCode($trade_answer->RetCode)) != MTRetCode::MT_RET_OK) return $ret_code;
+        //---
+        return MTRetCode::MT_RET_OK;
+    }
+
+    public function NewOrder(Order $orderRequest, &$order = null)
+    {
+        //--- send request
+        $data = [
+            'LOGIN' => 1100,
+            'SYMBOL' => 'eurusd',
+            'TYPE' => 1,
+            'VOLUME' => 1000,
+            'PRICE_ORDER' => 1.18462,
+            'POSITION' => 1100,
+            'TYPE_FILL' => 1,
+            'ACTION' => 0
+        ];
+
+        if(!$this->m_connect->Send(MTProtocolConsts::WEB_CMD_DEALER_SEND, $data))
+        {
+            if(MTLogger::getIsWriteLog()) MTLogger::write(MTLoggerType::ERROR, 'send trade failed');
+            return MTRetCode::MT_RET_ERR_NETWORK;
+        }
+        //--- get answer
+        if(($answer = $this->m_connect->Read()) == null)
+        {
+            if(MTLogger::getIsWriteLog()) MTLogger::write(MTLoggerType::ERROR, 'answer trade is empty');
+            return MTRetCode::MT_RET_ERR_NETWORK;
+        }
+
+        //--- parse answer
+        $trade_answer = null;
+        var_dump($answer); die();
+        //---
+        if(($error_code = $this->Parse($answer, $trade_answer)) != MTRetCode::MT_RET_OK)
+        {
+
+            if(MTLogger::getIsWriteLog()) MTLogger::write(MTLoggerType::ERROR, 'parse trade failed: [' . $error_code . ']' . MTRetCode::GetError($error_code));
+            return $error_code;
+        }
+
+        //---
+
         //---
         return MTRetCode::MT_RET_OK;
     }

@@ -25,6 +25,8 @@ use Tarikh\PhpMeta\Lib\MTPosition;
 use Tarikh\PhpMeta\Traits\Deal;
 use Tarikh\PhpMeta\Lib\MTDealProtocol;
 use Tarikh\PhpMeta\Lib\MTGroupProtocol;
+use Tarikh\PhpMeta\Entities\Order;
+use Tarikh\PhpMeta\Lib\CMT5Request;
 
 //+------------------------------------------------------------------+
 //--- web api version
@@ -40,17 +42,13 @@ class MetaTraderClient
      */
     protected $m_connect;
     //--- name agent
-    private $m_agent = 'WebAPI';
-    //--- is set crypt connection
-    private $m_is_crypt = true;
-
     protected $server;
-
+    //--- is set crypt connection
     protected $port;
-
     protected $username;
-
     protected $password;
+    private   $m_agent    = 'WebAPI';
+    private   $m_is_crypt = true;
     /**
      * @var bool
      */
@@ -68,6 +66,41 @@ class MetaTraderClient
         $this->username = $username;
         $this->password = $password;
         $this->debug = $debug;
+    }
+
+    /**
+     * Create trade record such as Deposit or Withdrawal
+     * @param Trade $trade
+     * @return Trade
+     * @throws ConnectionException
+     * @throws TradeException
+     */
+    public function trade(Trade $trade): Trade
+    {
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_trade = new MTTradeProtocol($this->m_connect);
+        $ticket = null;
+
+        $call = $mt_trade->TradeBalance($trade->getLogin(), $trade->getType(), $trade->getAmount(), $trade->getComment(), $ticket);
+        if ($call != MTRetCode::MT_RET_OK) {
+            throw new TradeException(MTRetCode::GetError($call));
+        }
+        $trade->setTicket($ticket);
+        return $trade;
+    }
+
+    /**
+     * Check connection
+     * @return bool
+     */
+    public function isConnected()
+    {
+        return $this->m_connect != null;
     }
 
     public function connect()
@@ -99,47 +132,12 @@ class MetaTraderClient
     }
 
     /**
-     * Check connection
-     * @return bool
-     */
-    public function isConnected()
-    {
-        return $this->m_connect != null;
-    }
-
-    /**
      * Disconnect from MetaTrader 5 server
      * @return void
      */
     public function disconnect()
     {
         if ($this->m_connect) $this->m_connect->Disconnect();
-    }
-
-    /**
-     * Create trade record such as Deposit or Withdrawal
-     * @param Trade $trade
-     * @return Trade
-     * @throws ConnectionException
-     * @throws TradeException
-     */
-    public function trade(Trade $trade): Trade
-    {
-        if (!$this->isConnected()) {
-            $conn = $this->connect();
-            if ($conn != MTRetCode::MT_RET_OK) {
-                throw new ConnectionException(MTRetCode::GetError($conn));
-            }
-        }
-        $mt_trade = new MTTradeProtocol($this->m_connect);
-        $ticket = null;
-
-        $call = $mt_trade->TradeBalance($trade->getLogin(), $trade->getType(), $trade->getAmount(), $trade->getComment(), $ticket);
-        if ($call != MTRetCode::MT_RET_OK) {
-            throw new TradeException(MTRetCode::GetError($call));
-        }
-        $trade->setTicket($ticket);
-        return $trade;
     }
 
     /**
@@ -535,7 +533,7 @@ class MetaTraderClient
             }
         }
         $mt_order = new MTPositionProtocol($this->m_connect);
-        $result = $mt_order->PositionGet($ticket, $symbol,$position);
+        $result = $mt_order->PositionGet($ticket, $symbol, $position);
         if ($result != MTRetCode::MT_RET_OK) {
             throw new UserException(MTRetCode::GetError($result));
         }
@@ -735,6 +733,31 @@ class MetaTraderClient
             throw new UserException(MTRetCode::GetError($result));
         }
         return $group;
+    }
+
+
+    public function newOrder(Order $order): bool
+    {
+        // Example of use
+        $request = new CMT5Request();
+        // Authenticate on the server using the Auth command
+        if ($request->Init($this->server.":".$this->port) && $request->Auth($this->username, $this->password, WebAPIVersion, "WebManager")) {
+
+            // Let us request the symbol named TEST using the symbol_get command
+            $path = '/api/dealer/send_request';
+            $result = $request->Get($path, json_encode([
+                'Login'  => $order->getLogin(),
+                'Action' => $order->getAction(),
+                'Type'   => $order->getType(),
+                'Volume' => $order->getVolume(),
+                'Symbol' => $order->getSymbol(),
+            ]));
+
+            var_dump($result);
+        }
+        $request->Shutdown();
+
+        return true;
     }
 
 }
