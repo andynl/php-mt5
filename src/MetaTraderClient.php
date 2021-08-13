@@ -752,8 +752,6 @@ class MetaTraderClient
                 'Volume' => $order->getVolume(),
                 'Symbol' => $order->getSymbol(),
             ]));
-
-            var_dump($result);
         }
         $request->Shutdown();
 
