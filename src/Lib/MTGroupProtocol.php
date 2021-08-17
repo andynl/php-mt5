@@ -3,6 +3,7 @@
 
 namespace Tarikh\PhpMeta\Lib;
 use \Tarikh\PhpMeta\Lib\MTConSymbol;
+use MTEnOrderFlags;
 
 /**
  * Class for send request group_total, group_next, group_get
