@@ -230,5 +230,11 @@ class User
     public function setAgent($agentLogin)
     {
         $this->agent = $agentLogin;
+        return $this;
+    }
+
+    public function getAgent()
+    {
+        return $this->agent;
     }
 }
