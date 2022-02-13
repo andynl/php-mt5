@@ -175,6 +175,7 @@ class MetaTraderClient
         $mtUser->Group = $user->getGroup();
         $mtUser->Leverage = $user->getLeverage();
         $mtUser->ZipCode = $user->getZipCode();
+        $mtUser->Agent = $user->getAgent();
 
         $newMtUser = MTUser::CreateDefault();
         $result = $mt_user->Add($mtUser, $newMtUser);

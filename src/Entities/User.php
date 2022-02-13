@@ -24,6 +24,7 @@ class User
     protected $phone;
     protected $phone_password;
     protected $investor_password;
+    protected $agent;
 
     /**
      * @return mixed
@@ -226,5 +227,14 @@ class User
         return $this;
     }
 
+    public function setAgent($agentLogin)
+    {
+        $this->agent = $agentLogin;
+        return $this;
+    }
 
+    public function getAgent()
+    {
+        return $this->agent;
+    }
 }
