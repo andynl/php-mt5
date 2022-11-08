@@ -117,6 +117,30 @@ $user = $api->getUser($exampleLogin);
 var_dump($user);
 ```
 
+### Get Last Tick (Price)
+```php
+use Tarikh\PhpMeta\MetaTraderClient;
+
+$server = "SERVER_MT4_IP";
+$port = 443;
+$login = "MANAGER LOGIN";
+$password = "API PASSWORD";
+$exampleLogin = 21001480007;
+
+$client = new MetaTraderClient($server, $port, $login, $password);
+
+// symbol — comma separated symbols, the prices of which should be received. The value length must not exceed 4096 characters. You may use the mask "*" and the negation sign "!" to specify groups of symbols. Example.
+// symbol=EURUSD,USDJPY — get quotes for symbols EURUSD and USDJPY.
+// symbol=Forex\Major*, GOLD — get quotes of all symbols from the Major subgroup and quotes of GOLD.
+// symbol=Forex\Crosses*,!AUDUSD — get quotes of all symbols of the Crosses subgroup except AUDUSD.
+// symbol=Forex\Major\EUR* — get quotes of all symbols with the basic currency EUR from the Major subgroup.
+
+$ticks = $api->getLastTick("AUDCAD");
+foreach ($ticks as $key => $tick) {
+    echo "{$tick->Symbol} BID {$tick->Bid} {$tick->Ask}\n";
+}
+```
+
 
 ### Todo
 
@@ -125,6 +149,7 @@ var_dump($user);
 - [x] Change Password
 - [x] Get Order By Ticket ID
 - [x] Get User Information
+- [x] Get Last Tick (Price)
 - [ ] Get Accounts
 - [ ] Remove Account
 - [ ] Get Trades

@@ -25,6 +25,7 @@ use Tarikh\PhpMeta\Lib\MTPosition;
 use Tarikh\PhpMeta\Traits\Deal;
 use Tarikh\PhpMeta\Lib\MTDealProtocol;
 use Tarikh\PhpMeta\Lib\MTGroupProtocol;
+use Tarikh\PhpMeta\Lib\MTTickProtocol;
 use Tarikh\PhpMeta\Entities\Order;
 use Tarikh\PhpMeta\Lib\CMT5Request;
 
@@ -757,6 +758,24 @@ class MetaTraderClient
         $request->Shutdown();
 
         return true;
+    }
+
+    public function getLastTick(string $symbol)
+    {
+        $ticks = [];
+        if (!$this->isConnected()) {
+            $conn = $this->connect();
+
+            if ($conn != MTRetCode::MT_RET_OK) {
+                throw new ConnectionException(MTRetCode::GetError($conn));
+            }
+        }
+        $mt_user = new MTTickProtocol($this->m_connect);
+        $result = $mt_user->TickLast($symbol, $ticks);
+        if ($result != MTRetCode::MT_RET_OK) {
+            throw new UserException(MTRetCode::GetError($result));
+        }
+        return $ticks;
     }
 
 }
