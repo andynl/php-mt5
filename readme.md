@@ -36,7 +36,7 @@ $trade->setLogin(6000189);
 $trade->setAmount(100);
 $trade->setComment("Deposit");
 $trade->setType(Trade::DEAL_BALANCE);
-$result = $api->trade($trade);
+$result = $client->trade($trade);
 ```
 
 The result variable will return Trade class with ticket information, you can grab ticket number by calling ``$result->getTicket()``
@@ -68,7 +68,7 @@ $user->setMainPassword("Secure123");
 $user->setInvestorPassword("NotSecure123");
 $user->setPhonePassword("NotSecure123");
 
-$result = $api->createUser($user);
+$result = $client->createUser($user);
 ```
 
 The result variable will return User class with login information, you can grab login number by calling ``$result->getLogin()``
@@ -85,7 +85,7 @@ $exampleLogin = 21001480007;
 
 $client = new MetaTraderClient($server, $port, $login, $password);
 // $type = "MAIN"; // Change $type to INVESTOR if you want to change investor password
-$api->changePasswordUser($exampleLogin, 'SecurePassword', $type);
+$client->changePasswordUser($exampleLogin, 'SecurePassword', $type);
 ```
 
 ### Get Order By Ticket ID
@@ -99,7 +99,7 @@ $password = "API PASSWORD";
 $exampleLogin = 21001480007;
 
 $client = new MetaTraderClient($server, $port, $login, $password);
-$order = $api->getOrder($ticket = 100);
+$order = $client->getOrder($ticket = 100);
 ```
 
 ### Get User Information
@@ -113,7 +113,7 @@ $password = "API PASSWORD";
 $exampleLogin = 21001480007;
 
 $client = new MetaTraderClient($server, $port, $login, $password);
-$user = $api->getUser($exampleLogin);
+$user = $client->getUser($exampleLogin);
 var_dump($user);
 ```
 
@@ -135,7 +135,7 @@ $client = new MetaTraderClient($server, $port, $login, $password);
 // symbol=Forex\Crosses*,!AUDUSD — get quotes of all symbols of the Crosses subgroup except AUDUSD.
 // symbol=Forex\Major\EUR* — get quotes of all symbols with the basic currency EUR from the Major subgroup.
 
-$ticks = $api->getLastTick("AUDCAD");
+$ticks = $client->getLastTick("AUDCAD");
 foreach ($ticks as $key => $tick) {
     echo "{$tick->Symbol} BID {$tick->Bid} {$tick->Ask}\n";
 }
