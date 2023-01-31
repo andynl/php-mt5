@@ -4,15 +4,23 @@ require_once __DIR__."/../vendor/autoload.php";
 use Tarikh\PhpMeta\MetaTraderClient;
 use Tarikh\PhpMeta\Entities\User;
 use Tarikh\PhpMeta\src\Lib\MTEnDealAction;
+use Tarikh\PhpMeta\Entities\Trade;
 
-$server = "SERVER_MT4_IP";
+$server = "mt5-demo.uw-global.com";
 $port = 443;
-$login = "MANAGER LOGIN";
-$password = "API PASSWORD";
-$exampleLogin = 21001480007;
+$login = "1004";
+$password = "zgdsshwB";
+$exampleLogin = 2132650061;
 
-$api = new MetaTraderClient($server, $port, $login, $password);
-$user = $api->getUser($exampleLogin);
+$api = new MetaTraderClient($server, $port, $login, $password, true);
+$trade = new Trade();
+$trade->setLogin($exampleLogin);
+$trade->setAmount(100);
+$trade->setComment("Deposit");
+$trade->setType(Trade::DEAL_BALANCE);
+$result = $api->trade($trade);
+
+var_dump($result);
 
 /**
  * User Function
