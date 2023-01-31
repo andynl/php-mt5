@@ -499,9 +499,8 @@ class MTConnect
      */
     public static function GetRetCode($ret_code_string)
     {
-        if (empty($ret_code_string)) return "";
         $p = explode(" ", $ret_code_string, 2);
-        //---
+        if (count($p) < 1) return 0;
         return (int)$p[0];
     }
 
