@@ -86,15 +86,19 @@ class MTTradeProtocol
         $trade_answer = new MTTradeAnswer();
         //--- get param
         $pos_end = -1;
-        $params = explode('|', $answer);
-
-        $trade_answer->RetCode = (string) filter_var(explode('=',$params[1])[1], FILTER_SANITIZE_NUMBER_INT);
-
-        if ($trade_answer->RetCode == MTRetCode::MT_RET_OK)
+        $pos_end = -1;
+        while(($param = $this->m_connect->GetNextParam($answer, $pos, $pos_end)) != null)
         {
-            $trade_answer->Ticket =(int) filter_var(explode('=',$params[2])[1], FILTER_SANITIZE_NUMBER_INT);
+            switch($param['name'])
+            {
+                case MTProtocolConsts::WEB_PARAM_RETCODE:
+                    $trade_answer->RetCode = $param['value'];
+                    break;
+                case MTProtocolConsts::WEB_PARAM_TICKET:
+                    $trade_answer->Ticket = $param['value'];
+                    break;
+            }
         }
-
 
         //--- check ret code
         if(($ret_code = MTConnect::GetRetCode($trade_answer->RetCode)) != MTRetCode::MT_RET_OK) return $ret_code;
