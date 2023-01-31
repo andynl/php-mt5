@@ -28,6 +28,7 @@ class MetaTraderTest extends TestCase
         echo $server."\n";
         echo $port."\n";
         echo $login."\n";
+        echo $password."\n";
         $this->client = new MetaTraderClient($server, $port, $login, $password);
     }
 
