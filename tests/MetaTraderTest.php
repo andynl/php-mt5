@@ -25,7 +25,9 @@ class MetaTraderTest extends TestCase
         $password =  getenv('PASSWORD');
         $this->exampleLogin = intval(getenv('EXAMPLE_LOGIN'));
         $this->exampleGroup =  getenv('EXAMPLE_GROUP');
-
+        echo $server."\n";
+        echo $port."\n";
+        echo $login."\n";
         $this->client = new MetaTraderClient($server, $port, $login, $password);
     }
 
