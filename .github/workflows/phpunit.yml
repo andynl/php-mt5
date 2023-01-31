@@ -1,5 +1,8 @@
 name: PHP Unit Composer
 
+env:
+  name: 'TEST'
+
 on:
   push:
     branches: [ "master" ]
