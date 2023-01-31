@@ -20,10 +20,10 @@ class MetaTraderTest extends TestCase
     {
 
         $server = getenv('SERVER_HOST');
-        $port =  getenv('SERVER_PORT');
-        $login =  getenv('LOGIN');
+        $port =  intval(getenv('SERVER_PORT'));
+        $login =  intval(getenv('LOGIN'));
         $password =  getenv('PASSWORD');
-        $this->exampleLogin =  getenv('EXAMPLE_LOGIN');
+        $this->exampleLogin = intval(getenv('EXAMPLE_LOGIN'));
         $this->exampleGroup =  getenv('EXAMPLE_GROUP');
 
         $this->client = new MetaTraderClient($server, $port, $login, $password);
