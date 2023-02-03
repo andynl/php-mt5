@@ -6,11 +6,11 @@ use Tarikh\PhpMeta\Entities\User;
 use Tarikh\PhpMeta\src\Lib\MTEnDealAction;
 use Tarikh\PhpMeta\Entities\Trade;
 
-$server = "mt5-demo.uw-global.com";
-$port = 443;
-$login = "1004";
-$password = "zgdsshwB";
-$exampleLogin = 2132650061;
+// $server = "";
+// $port = 443;
+// $login = "";
+// $password = "";
+// $exampleLogin = "";
 
 $api = new MetaTraderClient($server, $port, $login, $password, true);
 $trade = new Trade();
