@@ -5,22 +5,46 @@ use Tarikh\PhpMeta\MetaTraderClient;
 use Tarikh\PhpMeta\Entities\User;
 use Tarikh\PhpMeta\src\Lib\MTEnDealAction;
 use Tarikh\PhpMeta\Entities\Trade;
+use Tarikh\PhpMeta\Enums\OrderFilling;
+use Tarikh\PhpMeta\Enums\OrderTime;
+use Tarikh\PhpMeta\Enums\OrderType;
+use Tarikh\PhpMeta\Enums\TradeAction;
 
+// $server = "api.jksconsultants.com";
+// $port = 443;
+// $login = "2012";
+// $password = "drade32@!AV";
+$exampleLogin = 98779104;
 $server = "mt5-demo.uw-global.com";
 $port = 443;
 $login = "1004";
-$password = "zgdsshwB";
-$exampleLogin = 2132650061;
+$password = "mugen1996";
+$exampleLogin = 2132650062;
 
-$api = new MetaTraderClient($server, $port, $login, $password, true);
+$api = new MetaTraderClient($server, $port, $login, $password, false);
+
+// Open Pending order
 $trade = new Trade();
+$trade->setAction(TradeAction::TA_DEALER_ORD_PENDING);
 $trade->setLogin($exampleLogin);
-$trade->setAmount(100);
-$trade->setComment("Deposit");
-$trade->setType(Trade::DEAL_BALANCE);
-$result = $api->trade($trade);
+$trade->setSymbol("AUDJPY'");
+$trade->setVolume(1000);
+$trade->setType(OrderType::OP_BUY_LIMIT);
+$trade->setPriceOrder(90.100);
+$trade->setTypeFill(OrderFilling::ORDER_FILL_RETURN);
+$trade->setTypeTime(OrderTime::ORDER_TIME_SPECIFIED);
+$trade->setTimeExpiration(1675419314);
+
+$result = $api->newOrder($trade);
 
 var_dump($result);
+
+
+// $result = $api->trade($trade);
+// $user = $api->newOrder();
+
+
+// var_dump($result);
 
 /**
  * User Function

@@ -3,7 +3,7 @@
 
 namespace Tarikh\PhpMeta;
 
-
+use Exception;
 use Tarikh\PhpMeta\Entities\Trade;
 use Tarikh\PhpMeta\Entities\User;
 use Tarikh\PhpMeta\Exceptions\ConnectionException;
@@ -738,26 +738,26 @@ class MetaTraderClient
     }
 
 
-    public function newOrder(Order $order): bool
+    public function newOrder(Trade $trade)
     {
+        // var_dump($trade->toJson()); die();
         // Example of use
         $request = new CMT5Request();
+        $result = [];
         // Authenticate on the server using the Auth command
         if ($request->Init($this->server.":".$this->port) && $request->Auth($this->username, $this->password, WebAPIVersion, "WebManager")) {
 
             // Let us request the symbol named TEST using the symbol_get command
             $path = '/api/dealer/send_request';
-            $result = $request->Get($path, json_encode([
-                'Login'  => $order->getLogin(),
-                'Action' => $order->getAction(),
-                'Type'   => $order->getType(),
-                'Volume' => $order->getVolume(),
-                'Symbol' => $order->getSymbol(),
-            ]));
+            $result = $request->Get($path, json_encode($trade->toJson()));
+
         }
         $request->Shutdown();
-
-        return true;
+        
+        // Parse response to detect error
+        $response = json_decode($result);
+        $this->parseResponse($response);
+        return $response;
     }
 
     public function getLastTick(string $symbol)
@@ -776,6 +776,14 @@ class MetaTraderClient
             throw new UserException(MTRetCode::GetError($result));
         }
         return $ticks;
+    }
+   
+    public function parseResponse($response)
+    {
+        if (!isset($response->answer)) 
+        {
+            throw new Exception($response->retcode);
+        }
     }
 
 }
