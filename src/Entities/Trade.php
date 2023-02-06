@@ -8,7 +8,7 @@ namespace Tarikh\PhpMeta\Entities;
  * Class Trade
  * @package Tarikh\PhpMeta\Entities
  */
-class Trade
+class Trade extends BaseEntity
 {
     const DEAL_BUY                = 0; // buy
     const DEAL_SELL               = 1; // sell
@@ -34,6 +34,13 @@ class Trade
     const DEAL_FIRST = Trade::DEAL_BUY;
     const DEAL_LAST  = Trade::DEAL_SO_COMPENSATION;
 
+
+    protected $action;
+
+    protected $symbol;
+
+    protected $volume;
+
     protected $ticket;
     /**
      * @var
@@ -54,6 +61,41 @@ class Trade
      * @var
      */
     protected $comment;
+
+    /**
+     * @var
+     */
+    protected $priceOrder;
+
+    /**
+     * @var
+     */
+    protected $typeFill;
+
+    /**
+     * @var
+     */
+    protected $typeTime;
+
+    /**
+     * @var
+     */
+    protected $timeExpiration;
+
+    /**
+     * @var
+     */
+    protected $priceTrigger;
+
+    /**
+     * @var
+     */
+    protected $priceSl;
+
+    /**
+     * @var
+     */
+    protected $priceTp;
 
     /**
      * @return mixed
@@ -142,6 +184,187 @@ class Trade
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;
+        return $this;
+    }
+    
+
+    /**
+     * Get the value of priceTp
+     */
+    public function getPriceTp()
+    {
+        return $this->priceTp;
+    }
+
+    /**
+     * Set the value of priceTp
+     */
+    public function setPriceTp($priceTp): self
+    {
+        $this->priceTp = $priceTp;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of priceSl
+     */
+    public function getPriceSl()
+    {
+        return $this->priceSl;
+    }
+
+    /**
+     * Set the value of priceSl
+     */
+    public function setPriceSl($priceSl): self
+    {
+        $this->priceSl = $priceSl;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of priceTrigger
+     */
+    public function getPriceTrigger()
+    {
+        return $this->priceTrigger;
+    }
+
+    /**
+     * Set the value of priceTrigger
+     */
+    public function setPriceTrigger($priceTrigger): self
+    {
+        $this->priceTrigger = $priceTrigger;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of timeExpiration
+     */
+    public function getTimeExpiration()
+    {
+        return $this->timeExpiration;
+    }
+
+    /**
+     * Set the value of timeExpiration
+     */
+    public function setTimeExpiration($timeExpiration): self
+    {
+        $this->timeExpiration = $timeExpiration;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of typeTime
+     */
+    public function getTypeTime()
+    {
+        return $this->typeTime;
+    }
+
+    /**
+     * Set the value of typeTime
+     */
+    public function setTypeTime($typeTime): self
+    {
+        $this->typeTime = $typeTime;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of typeFill
+     */
+    public function getTypeFill()
+    {
+        return $this->typeFill;
+    }
+
+    /**
+     * Set the value of typeFill
+     */
+    public function setTypeFill($typeFill): self
+    {
+        $this->typeFill = $typeFill;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of priceOrder
+     */
+    public function getPriceOrder()
+    {
+        return $this->priceOrder;
+    }
+
+    /**
+     * Set the value of priceOrder
+     */
+    public function setPriceOrder($priceOrder): self
+    {
+        $this->priceOrder = $priceOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of action
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
+
+    /**
+     * Set the value of action
+     */
+    public function setAction($action): self
+    {
+        $this->action = $action;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of symbol
+     */
+    public function getSymbol()
+    {
+        return $this->symbol;
+    }
+
+    /**
+     * Set the value of symbol
+     */
+    public function setSymbol($symbol): self
+    {
+        $this->symbol = $symbol;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of volume
+     */
+    public function getVolume()
+    {
+        return $this->volume;
+    }
+
+    /**
+     * Set the value of volume
+     */
+    public function setVolume($volume): self
+    {
+        $this->volume = $volume;
+
         return $this;
     }
 

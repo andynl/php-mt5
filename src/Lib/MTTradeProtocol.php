@@ -106,18 +106,19 @@ class MTTradeProtocol
         return MTRetCode::MT_RET_OK;
     }
 
-    public function NewOrder(Order $orderRequest, &$order = null)
+    public function NewOrder()
     {
         //--- send request
         $data = [
-            'LOGIN' => 1100,
-            'SYMBOL' => 'eurusd',
-            'TYPE' => 1,
-            'VOLUME' => 1000,
-            'PRICE_ORDER' => 1.18462,
-            'POSITION' => 1100,
-            'TYPE_FILL' => 1,
-            'ACTION' => 0
+            'SourceLogin' => 1004,
+            'Login' => 2132650062,
+            'Symbol' => "AUDJPY'",
+            'Type' => 0,
+            'Volume' => 100,
+            'PriceOrder' => 91.975,
+            'TypeFill' => 0,
+            'Action' => 200,
+            'Digits' => 3
         ];
 
         if(!$this->m_connect->Send(MTProtocolConsts::WEB_CMD_DEALER_SEND, $data))
