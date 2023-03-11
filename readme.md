@@ -141,6 +141,27 @@ foreach ($ticks as $key => $tick) {
 }
 ```
 
+### Get Chart Data (Price)
+```php
+use Tarikh\PhpMeta\MetaTraderClient;
+
+$server = "SERVER_MT4_IP";
+$port = 443;
+$login = "MANAGER LOGIN";
+$password = "API PASSWORD";
+$exampleLogin = 21001480007;
+
+
+$api = new MetaTraderClient($server, $port, $login, $password, false);
+
+$symbol = 'EURUSD';
+$from = 1677710460;
+$to = 1678576993;
+$chartBar = $api->chartGet($symbol, $from, $to);
+
+var_dump($chartBar);
+```
+
 
 ### Todo
 
@@ -150,6 +171,7 @@ foreach ($ticks as $key => $tick) {
 - [x] Get Order By Ticket ID
 - [x] Get User Information
 - [x] Get Last Tick (Price)
+- [x] Get chart data
 - [ ] Get Accounts
 - [ ] Remove Account
 - [ ] Get Trades
