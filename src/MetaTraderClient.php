@@ -3,7 +3,8 @@
 
 namespace Tarikh\PhpMeta;
 
-
+use DateTime;
+use Exception;
 use Tarikh\PhpMeta\Entities\Trade;
 use Tarikh\PhpMeta\Entities\User;
 use Tarikh\PhpMeta\Exceptions\ConnectionException;
@@ -738,26 +739,25 @@ class MetaTraderClient
     }
 
 
-    public function newOrder(Order $order): bool
+    public function newOrder(Trade $trade)
     {
+        // var_dump($trade->toJson()); die();
         // Example of use
         $request = new CMT5Request();
+        $result = [];
         // Authenticate on the server using the Auth command
-        if ($request->Init($this->server.":".$this->port) && $request->Auth($this->username, $this->password, WebAPIVersion, "WebManager")) {
+        if ($request->Init($this->server . ":" . $this->port) && $request->Auth($this->username, $this->password, WebAPIVersion, "WebManager")) {
 
             // Let us request the symbol named TEST using the symbol_get command
             $path = '/api/dealer/send_request';
-            $result = $request->Get($path, json_encode([
-                'Login'  => $order->getLogin(),
-                'Action' => $order->getAction(),
-                'Type'   => $order->getType(),
-                'Volume' => $order->getVolume(),
-                'Symbol' => $order->getSymbol(),
-            ]));
+            $result = $request->Get($path, json_encode($trade->toJson()));
         }
         $request->Shutdown();
 
-        return true;
+        // Parse response to detect error
+        $response = json_decode($result);
+        $this->parseResponse($response);
+        return $response;
     }
 
     public function getLastTick(string $symbol)
@@ -778,4 +778,107 @@ class MetaTraderClient
         return $ticks;
     }
 
+    public function chartGet($symbol, $from, $to, $bar = "1m")
+    {
+        $request = new CMT5Request();
+        $result = [];
+        // Authenticate on the server using the Auth command
+        if ($request->Init($this->server . ":" . $this->port) && $request->Auth($this->username, $this->password, WebAPIVersion, "WebManager")) {
+
+            // Let us request the symbol named TEST using the symbol_get command
+            $path = "/api/chart/get?symbol={$symbol}&from={$from}&to={$to}&data=dohlctvs";
+            $result = $request->Get($path);
+        }
+        $request->Shutdown();
+
+        // Parse response to detect error
+        $response = json_decode($result);
+        $this->parseResponse($response);
+        // var_dump($response); die();
+        $data = array_map(function($obj){
+            return [
+                'time' => date('Y-m-d H:i:s', $obj[0]),
+                'open' => $obj[1],
+                'high' => $obj[2],
+                'low' => $obj[3],
+                'close' => $obj[4],
+                'volume' => $obj[5] * 10000,
+            ];
+        }, $response->answer);
+
+        // Convert 1m bar into 15m bar
+        // TODO : still not correct
+        // $response = $this->convertTimeBar($data, $bar);
+        return $data;
+    }
+
+    public function convertTimeBar($minuteData, $bar)
+    {
+        // Assuming $minuteData is an array of 1-minute price data
+        $quarterHourData = array();
+        $currentQuarterHour = '';
+        $open = 0;
+        $high = 0;
+        $low = 0;
+        $close = 0;
+        $volume = 0;
+        $count = 0;
+
+        foreach ($minuteData as $data) {
+            
+            $dateTime = $data['time'];
+            $quarterHour = date('Y-m-d H:', strtotime($dateTime)) . floor(date('i', strtotime($dateTime)) / 5) * 5 . ':00';
+
+            if ($quarterHour !== $currentQuarterHour) {
+                // Add the previous 15-minute data to the quarter-hour data array
+                if ($currentQuarterHour !== '') {
+                    $quarterHourData[] = array(
+                        'quarter_hour' => $currentQuarterHour,
+                        'open' => $open,
+                        'high' => $high,
+                        'low' => $low,
+                        'close' => $close,
+                        'volume' => $volume
+                    );
+                }
+
+                // Reset the 15-minute data variables for the new 15-minute period
+                $currentQuarterHour = $quarterHour;
+                $open = $data['open'];
+                $high = $data['high'];
+                $low = $data['low'];
+                $volume = $data['volume'];
+                $count = 1;
+            } else {
+                // Update the 15-minute data variables with the current minute's data
+                $high = max($high, $data['high']);
+                $low = min($low, $data['low']);
+                $volume += $data['volume'];
+                $count++;
+
+                if ($count == 5) {
+                    $close = $data['close'];
+                }
+            }
+        }
+
+        // Add the last 15-minute data to the quarter-hour data array
+        $quarterHourData[] = array(
+            'quarter_hour' => $currentQuarterHour,
+            'open' => $open,
+            'high' => $high,
+            'low' => $low,
+            'close' => $close,
+            'volume' => $volume
+        );
+
+        return $quarterHourData;
+    }
+
+    public function parseResponse($response)
+    {
+        if (!isset($response->answer)) {
+            throw new Exception($response->retcode);
+        }
+    }
 }

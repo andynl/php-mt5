@@ -1,6 +1,5 @@
 {
     "name": "tarikh/php-mt5",
-    "version": "1.7.0",
     "description": "A Metatrader 5 Web API Wrapper for Laravel",
     "type": "library",
     "license": "MIT",
@@ -15,5 +14,11 @@
             "Tarikh\\PhpMeta\\": "src/"
         }
     },
-    "require": {}
+    "require": {},
+    "scripts": {
+        "test": "./vendor/bin/phpunit --testdox"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
 }

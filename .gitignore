@@ -2,3 +2,5 @@ vendor
 .idea
 examples/client_test.php
 test
+.phpunit.result.cache
+phpunit.xml
